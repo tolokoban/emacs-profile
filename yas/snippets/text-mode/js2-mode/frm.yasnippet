@@ -1,0 +1,14 @@
+#contributor : Tolokoban
+#name : frm : All required modules for Forms.
+# --
+var B = require("tp4.button").create;
+var E = require("tp4.error").create;
+var I = require("tp4.input").create;
+var W = require("tp4.wait").create;
+var LR = require("tfw.layout-row").create;
+var Widget = require("wdg");
+
+function H(caption) { return B(caption).addClass("simple"); }
+function P(html) { return Widget.tag("p").html(html); }
+function BR() { return Widget.tag("br"); }
+$0

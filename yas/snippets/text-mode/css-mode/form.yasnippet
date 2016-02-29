@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: form
+# expand-env: ((some-var some-value))
+# --
+var B = require("tp4.button").create;
+var E = require("tp4.error").create;
+var I = require("tp4.input").create;
+var W = require("tp4.wait").create;
+var LR = require("tfw.layout-row").create;
+var Widget = require("wdg");
+
+function L(caption) {
+    return B(caption).addClass("simple");
+}
+
+function P(html) {
+    return Widget.tag("p").html(html);
+}
+
+function BR() {
+    return Widget.tag("br");
+}
+$0

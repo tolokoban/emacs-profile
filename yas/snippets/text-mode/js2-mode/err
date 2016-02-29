@@ -1,0 +1,4 @@
+#contributor : Tolokoban
+#name : console.error();
+# --
+console.error($0);

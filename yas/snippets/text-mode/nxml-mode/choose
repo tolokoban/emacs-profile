@@ -1,0 +1,11 @@
+#contributor : Tolokoban
+#name : <xsl:choose><xsl:when></xsl:when>...</xsl:choose>
+# --
+<xsl:choose>
+  <xsl:when test="$1">
+    $2
+  </xsl:when>
+  <xsl:otherwise>
+    $3
+  </xsl:otherwise>
+</xsl:choose>$0

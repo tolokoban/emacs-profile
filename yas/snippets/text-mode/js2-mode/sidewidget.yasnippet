@@ -1,0 +1,39 @@
+# -*- mode: snippet -*-
+#contributor : Tolokoban
+#name : Ajout d'un SideWidget dans Trail-Passion.
+# --
+/**
+ * <Title>`(file-name-sans-extension (buffer-name))`</Title>
+ * <Var id="created">`(format-time-string "%d/%m/%Y")`</Var>
+ *
+ */
+{
+    superclass: "tp3.SideWidget",
+    singleton: true,
+ 
+    init: function() {
+        $0        
+    },
+
+    functions: {
+        title: function() {
+            return "$1";
+        },
+        
+        onShow: function(arg) {
+            $0
+        },
+        
+        onHide: function() {
+            return true;
+        },
+        
+        action: function(key, data) {
+            switch(key) {
+            case "":
+                
+                break;
+            }
+        }
+    }
+}

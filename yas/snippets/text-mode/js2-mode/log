@@ -1,0 +1,4 @@
+#contributor : Tolokoban
+#name : console.log();
+# --
+console.log($0);

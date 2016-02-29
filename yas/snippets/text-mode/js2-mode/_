@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: _('intl')
+# --
+_('$0')

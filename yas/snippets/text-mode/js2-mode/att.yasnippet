@@ -1,0 +1,11 @@
+#contributor : Tolokoban
+#name : att : Accessor for attribute.
+# --
+/**
+ * Accessor for attribute $1.
+ */
+`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype.$1 = function(v) {
+    if (typeof v === 'undefined') return this._$1;
+    this._$1 = v;
+    return this;
+};$0

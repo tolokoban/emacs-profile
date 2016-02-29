@@ -1,0 +1,11 @@
+#contributor : Tolokoban
+#name : Accessor pour un attribut.
+# --
+        /**
+	 * Accessor for ${1:name}.
+	 */
+	$1: function(v) {
+	    if (v === undefined) return this._$1;
+	    this._$1 = v;
+	    return this;
+	}$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: stm
+# --
+$stm = $DB->query("$1");
+while ($row = $stm->fetch()) {
+      $0
+}

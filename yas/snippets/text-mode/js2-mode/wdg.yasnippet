@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: wdg
+# --
+/**
+ *
+ * @module $1
+ */
+
+
+/**
+ * $0
+ * @example
+ * <w:$1></w:$1>
+ */
+exports.compile = function(root) {
+    this.Tree.keepOnlyTagChildren(root);
+};

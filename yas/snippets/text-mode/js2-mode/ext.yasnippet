@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ext
+# --
+// Cette classe hérite de ${1:Widget}
+`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype = Object.create(${1:Widget}.prototype);
+`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype.constructor = `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`;
+$0

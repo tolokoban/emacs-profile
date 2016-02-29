@@ -1,0 +1,22 @@
+#contributor : Tolokoban
+#name : Squelette d'une class ToloFrameWork.
+# --
+/**
+ * @namespace `(file-name-sans-extension (buffer-name))`
+ * @created `(format-time-string "%d/%m/%Y")`
+ *
+ * @class `(file-name-sans-extension (buffer-name))`
+ */
+window["TFW::`(file-name-sans-extension (buffer-name))`"] = {
+	superclass: ${1:null},
+        singleton: ${2:false},
+        attributes: {},
+        classInit: function(vars) {},
+	signals: [""],
+        //=====================
+	init: function() {$3},	
+
+	functions: {
+	      $0
+	}
+};

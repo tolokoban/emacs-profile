@@ -1,0 +1,6 @@
+#name : bg -> background-...: ...
+# --
+background-repeat:   ${1:no-repeat};
+background-position: ${2:50% 50%};
+background-size:     ${3:contain};
+background-image:    url($0);
