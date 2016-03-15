@@ -1,6 +1,6 @@
 #contributor : Tolokoban
-#name : for (key in toto) ...
+#name : fork --> for( key in toto ) ...
 # --
-for (${1:key} in $2) {
+for( ${1:key} in $2 ) {
 ${3:val} = $2[$1];$0
 }
