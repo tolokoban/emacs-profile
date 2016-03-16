@@ -1,0 +1,12 @@
+#contributor : Tolokoban
+#name : getset --> defineProperty
+# --
+/**
+ * $1
+ */
+Object.defineProperty( `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype, '${2:value}', {
+get: function() { return this._$2; },
+set: function(v) { this._$2 = v; },
+configurable: true,
+enumarable: true
+});$0
