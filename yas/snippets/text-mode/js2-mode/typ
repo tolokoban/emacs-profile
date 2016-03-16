@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
 # name: typ -> typeof {} === '{}'
 # --
-typeof $1 === '${2:undefined}'$0
+typeof $1 ${2:=}== '${3:undefined}'$0

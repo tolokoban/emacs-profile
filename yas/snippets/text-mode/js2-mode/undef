@@ -1,5 +1,5 @@
 #contributor : Tolokoban
-#name : if (toto === undefined) toto = "blabla";
+#name : if( toto === undefined ) toto = "blabla";
 # --
-if (typeof $1 === 'undefined') $1 = $2;
+if( typeof $1 === 'undefined' ) $1 = $2;
 $0

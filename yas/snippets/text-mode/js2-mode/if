@@ -1,0 +1,6 @@
+#contributor : Tolokoban
+#name : if(  ) {}
+# --
+if( $1 ) {
+$0
+}
