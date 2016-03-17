@@ -2,11 +2,11 @@
 #name : getset --> defineProperty
 # --
 /**
- * $1
+ * $2
  */
-Object.defineProperty( `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype, '${2:value}', {
-get: function() { return this._$2; },
-set: function(v) { this._$2 = v; },
+Object.defineProperty( `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype, '${1:value}', {
+get: function() { return this._$1; },
+set: function(v) { this._$1 = v; },
 configurable: true,
-enumarable: true
+enumerable: true
 });$0
