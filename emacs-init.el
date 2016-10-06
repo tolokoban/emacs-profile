@@ -8,6 +8,14 @@
 (load-library "iso-transl")
 
 
+; ===========
+; MELPA
+; -----------
+(require 'package) ;; You might already have this line
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize) ;; You might already have this line
+
 
 ; ==================================
 ; IDO mode : Interactively Do Things
