@@ -1,0 +1,7 @@
+#contributor : Tolokoban
+#key: fori
+#name : fori -> for (i=0 ; i<toto.length ; i++) ...
+# --
+for( ${1:i} = 0 ; $1 < $2.length ; $1++ ) {
+var ${3:item} = $2[$1];$0
+}

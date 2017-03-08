@@ -1,5 +1,0 @@
-#contributor : Tolokoban
-#name : var that = this;
-# --
-var that = this;
-$0

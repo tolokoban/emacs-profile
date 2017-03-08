@@ -1,4 +1,0 @@
-#contributor : Tolokoban
-#name : var $1 = $_parseArg(arg_$1);
-# --
-var $1 = $_parseArg(arg_$1);

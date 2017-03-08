@@ -1,0 +1,5 @@
+#contributor : Tolokoban
+#key: arg    
+#name : var $1 = $_parseArg(arg_$1);
+# --
+var ${1:args} = Array.prototype.slice.call( arguments );$0

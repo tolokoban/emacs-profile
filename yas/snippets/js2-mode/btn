@@ -1,0 +1,5 @@
+#contributor : Tolokoban
+#key: btn
+#name : $$("tfw.widget.Button", ...)
+# --
+new Button({ text: $1 })$0

@@ -1,4 +1,0 @@
-#contributor : Tolokoban
-#name : $$("tfw.widget.Button", ...)
-# --
-$$("tfw.widget.Button", {caption: $1}).Click(this, "$0")

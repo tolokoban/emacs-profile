@@ -1,0 +1,7 @@
+#contributor : Tolokoban
+#key: fork
+#name : fork --> for( key in toto ) ...
+# --
+for( ${1:key} in $2 ) {
+${3:val} = $2[$1];$0
+}

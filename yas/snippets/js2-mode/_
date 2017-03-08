@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# key: _
+# name: _('intl')
+# --
+_('$1')$0

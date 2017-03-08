@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# key: iftyp
+# name: if( typeof {} === '{}' )
+# --
+if( typeof $1 ${2:=}== '${3:undefined}' ) $0

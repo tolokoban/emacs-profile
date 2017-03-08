@@ -1,7 +1,0 @@
-#contributor : Tolokoban
-#name : get --> defineProperty read only
-# --
-Object.defineProperty( this, '${1:element}', {
-value: ${2:$.div()}, 
-writable: false, configurable: false, enumerable: true
-});$0

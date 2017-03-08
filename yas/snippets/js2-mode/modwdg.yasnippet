@@ -1,0 +1,30 @@
+#contributor : Tolokoban
+#req: mowdg
+#name : modwdg: Inherit frokm Widget.
+# --
+"use strict";
+var Widget = require("wdg");
+
+/**
+ * @example
+ * var `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")` = require("`(file-name-sans-extension (buffer-name))`");
+ * var instance = new `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`($1);
+ * @class `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`
+ */
+var `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")` = function($1) {
+    Widget.call(this);
+    this.addClass("`(mapconcat 'identity (split-string (file-name-sans-extension (buffer-name)) "\\\\.") "-")`");
+    $0
+};
+
+// Extension of Widget.
+`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype = Object.create(Widget.prototype);
+`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.prototype.constructor = `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`;
+
+// TODO: put your prototypes here...
+
+
+`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`.create = function($1) {
+return new `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`($1);
+};
+module.exports = `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`;

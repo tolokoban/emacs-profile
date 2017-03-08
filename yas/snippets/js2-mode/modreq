@@ -1,0 +1,13 @@
+#contributor : Tolokoban
+#req: modreq
+#name : modreq --> NodeJS modules without Toloframework.
+# --
+require( '`(file-name-sans-extension (buffer-name))`', function( exports, module ) {
+"use strict";
+
+var `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")` = function($1) {
+    $0
+};
+
+module.exports = `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`;
+});

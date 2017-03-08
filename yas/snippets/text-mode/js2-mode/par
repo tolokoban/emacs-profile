@@ -1,4 +1,0 @@
-#contributor : Tolokoban
-#name : par -->  {"name": "ZANOLLA Jules", "days": "M"},
-# --
-{"name": "$1", "days": "${2:LMJV}", "mail": "$3", "exclude": [$4]},$0
