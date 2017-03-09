@@ -1,0 +1,6 @@
+#contributor : Tolokoban
+#key: that
+#name : var that = this;
+# --
+var that = this;
+$0

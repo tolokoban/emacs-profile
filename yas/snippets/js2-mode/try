@@ -1,0 +1,11 @@
+#contributor : Tolokoban
+#key: try
+#name: try {} catch(e) {}
+# --
+try {
+   $0
+}
+catch (e) {
+   console.error("[${1:`(buffer-name)`}:$2]", e);
+   throw(Error("[${1:`(buffer-name)`}:$2]\n" + e));
+}

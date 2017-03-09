@@ -1,0 +1,17 @@
+#contributor : Tolokoban
+#key: com
+#name : New Toloframework component
+# --
+/**
+ * Component ${1:x-my-component}
+ */
+
+exports.tags = ["$1"];
+exports.priority = 0;
+
+/**
+ * Compile a node of the HTML tree.
+ */
+exports.compile = function(root, libs) {
+$0
+};

@@ -1,9 +1,0 @@
-#contributor : Tolokoban
-#name : try {} catch(e) {}
-# --
-try {
-   $0
-}
-catch (e) {
-   throw("[$1]\n" + e);
-}

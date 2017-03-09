@@ -1,9 +1,0 @@
-#contributor : Tolokoban
-#name : proto: Toto.prototype.method = function()
-# --
-/**
- * @return void
- */
-${1:`(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`}.prototype.$2 = function($3) {
-    $0
-};

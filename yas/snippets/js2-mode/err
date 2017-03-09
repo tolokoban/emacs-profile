@@ -1,0 +1,5 @@
+#contributor : Tolokoban
+#key: err
+#name : console.error();
+# --
+console.error(${1:err});$0

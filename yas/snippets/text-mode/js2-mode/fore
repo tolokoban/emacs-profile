@@ -1,6 +1,0 @@
-#contributor : Tolokoban
-#name : fore -> Array.forEach(...)
-# --
-$1.forEach(function (${2:itm, idx, arr}) {
-$0
-});

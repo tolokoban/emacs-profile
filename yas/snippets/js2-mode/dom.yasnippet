@@ -1,0 +1,30 @@
+#contributor : Tolokoban
+#key: dom 
+#name: dom: New class.
+# --
+"use strict";
+
+var $ = require("dom");
+var DB = require("tfw.data-binding");
+
+/**
+ * @class `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`
+ *
+ * @param {boolean} opts.visible - Set the visiblity of the component.
+ *
+ * @example
+ * var `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")` = require("`(file-name-sans-extension (buffer-name))`");
+ * var instance = new `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`({visible: false});
+ */
+var `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")` = function(opts) {
+    var elem = $.elem( this, 'div' );
+    $0
+    DB.propRemoveClass( this, 'visible', 'hide' );
+
+    opts = DB.extend({
+         visible: true
+    }, opts, this);
+};
+
+
+module.exports = `(mapconcat 'identity (mapcar 'capitalize (split-string (car (last (split-string (file-name-sans-extension (buffer-name)) "\\\\."))) "-")) "")`;

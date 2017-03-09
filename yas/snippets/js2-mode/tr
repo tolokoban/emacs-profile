@@ -1,0 +1,5 @@
+#contributor : Tolokoban
+#key: tr
+#name: $$.trace();
+# --
+console.info("[`(file-name-sans-extension (buffer-name))`] $0$1=", $1);

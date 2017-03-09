@@ -1,0 +1,11 @@
+#contributor : Tolokoban
+#key: fun
+#name : function( ... ) {}
+# --
+<<<<<<< HEAD:yas/snippets/text-mode/js2-mode/fun.yasnippet
+function $1($2) {
+=======
+function$1($2) {
+>>>>>>> a8e4324edb7fc2a2bfc13729a0b80162f8f8c197:yas/snippets/js2-mode/fun.yasnippet
+    $0
+}

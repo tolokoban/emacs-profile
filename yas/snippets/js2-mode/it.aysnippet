@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# key: it
+# name: it('should...', function() {...})
+# --
+it('$1', function($2) {
+    $0
+});

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# key: typ
+# name: typ -> typeof {} === '{}'
+# --
+typeof $1 ${2:=}== '${3:undefined}'$0

@@ -114,12 +114,33 @@
 ; ===========
 ;  YASnippet
 ; -----------
-(add-to-list 'load-path
-              (concat root "yas"))
-(require 'yasnippet (concat root "yas/yasnippet.el"))
-(yas/initialize)
-(yas/load-directory (concat root "yas/snippets"))
+;(add-to-list 'load-path
+;              (concat root "yas"))
+;(require 'yasnippet (concat root "yas/yasnippet.el"))
+;(yas/initialize)
+;(yas/load-directory (concat root "yas/snippets"))
+(require 'yasnippet)
+(yas-global-mode 1)
 
+(defun camelize (s)
+  "Transform 'tfw.web-service' into 'WebService'."
+  (mapconcat 'identity (mapcar 'capitalize (
+      split-string 
+      (
+        car 
+        (
+          last 
+          (
+            split-string 
+            s
+            "\\."
+          )
+        )
+      ) 
+      "-"
+    ) 
+  )  
+  ""))
 
 ; ===========
 ;  js2-mode
@@ -611,7 +632,6 @@ by using nxml's indentation rules."
     )
   )
 )
-
 
 					; =========================
 					;  Agencement des fenêtres
