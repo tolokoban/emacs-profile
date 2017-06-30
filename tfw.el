@@ -45,10 +45,18 @@
   (interactive)
   (progn (find-file (concat (file-name-sans-extension (buffer-file-name)) ".dep")) ) )
 
+(defun tfw-menu ()
+  "Affiche les touches disponibles pour le TFW."
+  (interactive)
+  (progn (message "[C]ss, [J]avascript, [I]nternational, [D]ependencies") ) )
+
 (global-set-key (kbd "C-S-t c" ) 'tfw-switch-css)
 (global-set-key (kbd "C-S-t j" ) 'tfw-switch-js)
 (global-set-key (kbd "C-S-t i" ) 'tfw-switch-ini)
 (global-set-key (kbd "C-S-t d" ) 'tfw-switch-dep)
+
+(global-set-key (kbd "C-S-t h" ) 'tfw-menu)
+
 
 (provide 'tfw)
 ;;; tfw.el ends here
