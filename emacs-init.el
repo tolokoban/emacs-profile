@@ -3,6 +3,8 @@
 ;;;    (load-file (concat root "emacs/emacs-init.el"))
 ;;; ---------------------------------------------------------------------
 
+; Full screen.
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
 ; Corriger le problème des accents circonflexes.
 (load-library "iso-transl")
@@ -639,3 +641,8 @@ by using nxml's indentation rules."
 (delete-other-windows)
 (find-file (concat "~/todo.org"))
 (split-window-right)
+
+
+(load-file (concat root "tfw.el"))
+
+(recover-session)
