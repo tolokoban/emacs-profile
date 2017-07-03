@@ -3,23 +3,57 @@
 ;;;    (load-file (concat root "emacs/emacs-init.el"))
 ;;; ---------------------------------------------------------------------
 
-;; ===========
+;; =====
 ;; MELPA
-;; -----------
-(require 'use-package)
-(require 'package) ;; You might already have this line
+;; -----
+(require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize) ;; You might already have this line
+(package-initialize)
 
+;; ========================
+;; Install needed packages.
+;; ------------------------
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it’s not.
 
+Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     ;; (package-installed-p 'evil)
+     (if (package-installed-p package)
+         nil
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+           (package-install package)
+         package)))
+   packages))
+
+;; make sure to have downloaded archive description.
+;; Or use package-archive-contents as suggested by Nicolas Dudebout
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
+(ensure-package-installed 'use-package
+                          'dash
+			  'yasnippet
+			  'json-mode
+			  'js2-mode
+			  'dired-narrow
+			  'dired-subtree
+                          'diredful
+			  'swiper
+			  'counsel
+			  'ivy)
+
+(require 'use-package)
 
 ;; Full screen.
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
-;; Corriger le probl�me des accents circonflexes.
+;; Corriger le problème des accents circonflexes.
 (load-library "iso-transl")
 
 
@@ -28,9 +62,9 @@
 ;; -----
 ;; auto refresh dired when file changes
 (add-hook 'dired-mode-hook 'auto-revert-mode)
-; Adding colors by extension.
-(require 'diredful)
-(diredful-mode 1)
+                                        ; Adding colors by extension.
+(use-package diredful
+  :config (diredful-mode 1))
 ;; allow editing file permissions
 (setq wdired-allow-to-change-permissions t)
 ;;narrow dired to match filter
@@ -40,7 +74,10 @@
               ("/" . dired-narrow)))
 (use-package dired-subtree
   :bind (:map dired-mode-map
-              ("i" . dired-subtree-insert)))
+              ("i" . dired-subtree-insert)
+              ("k" . dired-subtree-remove)
+              )
+  )
 
 
 ;; ==================================
@@ -71,7 +108,7 @@
 
 
 ;; ================================
-;;  L'UTF-8 est le coding préféré.
+;;  L'UTF-8 est le coding prÃ©fÃ©rÃ©.
 ;; --------------------------------
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -81,7 +118,7 @@
                                         ;(setq coding-system-for-write 'utf-8)
 
 ;; ============================================================================
-;;  Permettre de reconnaître automatiquement les fichiers UTF-16 de Windows 7.
+;;  Permettre de reconnaÃ®tre automatiquement les fichiers UTF-16 de Windows 7.
 ;; ----------------------------------------------------------------------------
 ;; Detect endianness of UTF-16 containing a Byte Order Mark U+FEFF
 ;; Detect EOL mode by looking for CR/LF on the first line
@@ -127,7 +164,7 @@
 (setq tab-width 2)
 (setq-default indent-tabs-mode nil)
 
-;; Permet de colorier des portions de text avec des expressions régulières.
+;; Permet de colorier des portions de text avec des expressions rÃ©guliÃ¨res.
 (global-hi-lock-mode 1)
 
 ;; Gestion des groupes de fichiers.
@@ -135,7 +172,7 @@
 
 
 ;; ============================================
-;;  D�finir le path pour les elisp de la clef.
+;;  Définir le path pour les elisp de la clef.
 ;; --------------------------------------------
 (add-to-list 'load-path
              (concat root "elisp"))
@@ -232,11 +269,11 @@
  '(font-lock-string-face ((((class color) (min-colors 88) (background light)) (:foreground "#006000"))))
  '(js2-error-face ((((class color) (background light)) (:foreground "red" :underline "red")))))
 
-;; Ne pas afficher les numéros de ligne. par défaut pour éviter les problèmes
+;; Ne pas afficher les numÃ©ros de ligne. par dÃ©faut pour Ã©viter les problÃ¨mes
 ;; avec les gros fichiers (de log, par exemple).
 (global-linum-mode 0)
 
-;; Quand on tape une touche, cela supprime le texte sélectionné.
+;; Quand on tape une touche, cela supprime le texte sÃ©lectionnÃ©.
 (delete-selection-mode 1)
 
 ;; Utilisation du dictionnaire pour correction syntaxique.
@@ -273,7 +310,7 @@
 
 
 
-;; Empêche Dired d'ouvrir un nouveau buffer à chaque visite d'un nouveau folder.
+;; EmpÃªche Dired d'ouvrir un nouveau buffer Ã  chaque visite d'un nouveau folder.
 (put 'dired-find-alternate-file 'disabled nil)
 
 
@@ -334,7 +371,7 @@
 (global-set-key [C-tab] 'other-window)
 (global-set-key "\M-g" 'goto-line)
 
-;; Restauration de la session précédente (mettre 1 pour l'activer)
+;; Restauration de la session prÃ©cÃ©dente (mettre 1 pour l'activer)
 (desktop-save-mode 0)
 
 (server-start)
@@ -367,7 +404,7 @@
   "\\usepackage{pstricks-add}\n"
   "\\usepackage{multido}\n"
   "\n"
-  "% Réglages pour l'affichage du code Python\n"
+  "% RÃ©glages pour l'affichage du code Python\n"
   "\\lstset{language=Python, frame=lines,\n"
   "        frameround=tttt, inputencoding=utf8}\n"
   "\\lstset{basicstyle=\\scriptsize}\n"
@@ -384,7 +421,7 @@
   "\\maketitle\n"
   "\n"
   "\\begin{abstract}\n"
-  "Le résumé\n"
+  "Le rÃ©sumÃ©\n"
   "\\end{abstract}\n"
   "\n"
   "\\section{Premier paragraphe}\n"
@@ -481,7 +518,7 @@
   )
 (define-derived-mode log-mode fundamental-mode
   (setq font-lock-defaults '(log-mode-font-lock-defaults))
-  ;; Supprimer la coloration par défaut des chaînes de caractère.
+  ;; Supprimer la coloration par dÃ©faut des chaÃ®nes de caractÃ¨re.
   (setq font-lock-syntax-table nil)
   (setq mode-name "LODH log files mode")
   )
@@ -530,12 +567,12 @@ Puis affichage avec evince."
 
 
 ;; ======================================
-;;  Définition de Toloframework sur F11.
+;;  DÃ©finition de Toloframework sur F11.
 ;; --------------------------------------
 (defun tfw ()
   "Toloframework compiler.
 
-Extrait la documentation et un fichier compressé d'un script javascript �
+Extrait la documentation et un fichier compressÃ© d'un script javascript Ã
 l'extension <*.js>."
   (interactive)
   (progn
@@ -655,49 +692,55 @@ by using nxml's indentation rules."
   )
 
 ;; =========================
-;;  Agencement des fenêtres
+;;  Agencement des fenÃªtres
 ;; -------------------------
 (delete-other-windows)
 (find-file (concat "~/todo.org"))
 (split-window-right)
-(find-file (concat "~/.emacs.d/init.el"))
+(find-file (concat root "emacs-init.el"))
+
 
 ;; Open Recent File Menu.
 (require 'recentf)
 (recentf-mode 1)
 
-;; No start-up screen.                                        ;
+;; No start-up screen.
 (setq inhibit-startup-screen t)
 
 ;; Multiple Cursors.
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+(use-package multiple-cursors
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)
+         ))
 
 ;; Ivy : http://oremacs.com/swiper/
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-
+(use-package swiper)
+(use-package counsel)
+(use-package ivy
+  :init (progn
+          (ivy-mode 1)
+          (setq ivy-use-virtual-buffers t)
+          (setq enable-recursive-minibuffers t)
+          (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
+  :bind (("\C-s" . swiper)
+         ("C-c C-r" . ivy-resume)
+         ("<f6>" . ivy-resume)
+         ("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("<f1> f" . counsel-describe-function)
+         ("<f1> v" . counsel-describe-variable)
+         ("<f1> l" . counsel-find-library)
+         ("<f2> i" . counsel-info-lookup-symbol)
+         ("<f2> u" . counsel-unicode-char)
+         ("C-c g" . counsel-git)
+         ("C-c j" . counsel-git-grep)
+         ("C-c k" . counsel-ag)
+         ("C-x l" . counsel-locate)
+         ("C-S-o" . counsel-rhythmbox)))
 
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
