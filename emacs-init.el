@@ -3,62 +3,86 @@
 ;;;    (load-file (concat root "emacs/emacs-init.el"))
 ;;; ---------------------------------------------------------------------
 
-; Full screen.
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
-
-; Corriger le probl�me des accents circonflexes.
-(load-library "iso-transl")
-
-
-; ===========
-; MELPA
-; -----------
+;; ===========
+;; MELPA
+;; -----------
+(require 'use-package)
 (require 'package) ;; You might already have this line
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize) ;; You might already have this line
 
 
-; ==================================
-; IDO mode : Interactively Do Things
-; Aide  pour  switcher  entre  les  buffers  et  pour  rechercher  des
-; fichiers.
-; ---------------------------------- 
+
+;; Full screen.
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+
+;; Corriger le probl�me des accents circonflexes.
+(load-library "iso-transl")
+
+
+;; =====
+;; Dired
+;; -----
+;; auto refresh dired when file changes
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+; Adding colors by extension.
+(require 'diredful)
+(diredful-mode 1)
+;; allow editing file permissions
+(setq wdired-allow-to-change-permissions t)
+;;narrow dired to match filter
+(use-package dired-narrow
+  :ensure t
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
+(use-package dired-subtree
+  :bind (:map dired-mode-map
+              ("i" . dired-subtree-insert)))
+
+
+;; ==================================
+;; IDO mode : Interactively Do Things
+;; Aide  pour  switcher  entre  les  buffers  et  pour  rechercher  des
+;; fichiers.
+;; ----------------------------------
 (require 'ido)
 (ido-mode t)
 
 
-; ==============================================
-; Mode pour visualiser les fichiers de grammaire
-; ----------------------------------------------
+;; ==============================================
+;; Mode pour visualiser les fichiers de grammaire
+;; ----------------------------------------------
 (setq grammarKeywords
- '(("^\\@\\(leaf\\|node\\|blackhole\\|skip\\|test\\)" . font-lock-function-name-face)
-   ("([^)]+)" . font-lock-constant-face)
-   ("^\\(#\\|//\\).*$" . font-lock-comment-face)
-   ("[!&|,=]+" . font-lock-keyword-face)
-   ("[\\*\\+\\?]" . font-lock-type-face)
-  )
-)
+      '(("^\\@\\(leaf\\|node\\|blackhole\\|skip\\|test\\)" . font-lock-function-name-face)
+        ("([^)]+)" . font-lock-constant-face)
+        ("^\\(#\\|//\\).*$" . font-lock-comment-face)
+        ("[!&|,=]+" . font-lock-keyword-face)
+        ("[\\*\\+\\?]" . font-lock-type-face)
+        )
+      )
 
 (define-derived-mode grammar-mode fundamental-mode
   (setq font-lock-defaults '(grammarKeywords))
   (setq mode-name "grammar")
-)
+  )
 
 
-; ================================
-;  L'UTF-8 est le coding préféré.
-; --------------------------------
+;; ================================
+;;  L'UTF-8 est le coding préféré.
+;; --------------------------------
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-;(setq coding-system-for-read 'utf-8)
-;(setq coding-system-for-write 'utf-8)
+                                        ;(setq coding-system-for-read 'utf-8)
+                                        ;(setq coding-system-for-write 'utf-8)
 
-; ============================================================================
-;  Permettre de reconnaître automatiquement les fichiers UTF-16 de Windows 7.
-; ----------------------------------------------------------------------------
+;; ============================================================================
+;;  Permettre de reconnaître automatiquement les fichiers UTF-16 de Windows 7.
+;; ----------------------------------------------------------------------------
 ;; Detect endianness of UTF-16 containing a Byte Order Mark U+FEFF
 ;; Detect EOL mode by looking for CR/LF on the first line
 (add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE.*\x0D\x00$" . utf-16-le-dos) t)
@@ -66,6 +90,16 @@
 (add-to-list 'auto-coding-regexp-alist '("^\xFF\xFE" . utf-16-le) t)
 (add-to-list 'auto-coding-regexp-alist '("^\xFE\xFF" . utf-16-be) t)
 
+
+;; Cleaning indentation of a buffer.
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+  (iwb)
+  (untabify-buffer)
+  (delete-trailing-whitespace)
+  (delete-trailing-blank-lines))
+(global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 ;; Donne des noms de buffers plus explicites que les "toto<2>", "toto<3>", ...
 (require 'uniquify)
@@ -90,7 +124,7 @@
 
 
 ;; Remplace les tabulations par des espaces lors de l'indentation.
-(setq tab-width 4)
+(setq tab-width 2)
 (setq-default indent-tabs-mode nil)
 
 ;; Permet de colorier des portions de text avec des expressions régulières.
@@ -100,64 +134,54 @@
 (filesets-init)
 
 
-; ============================================
-;  D�finir le path pour les elisp de la clef.
-; --------------------------------------------
+;; ============================================
+;;  D�finir le path pour les elisp de la clef.
+;; --------------------------------------------
 (add-to-list 'load-path
-              (concat root "elisp"))
+             (concat root "elisp"))
 
-; ===============
-;  Markdown mode
-; ---------------
+;; ===============
+;;  Markdown mode
+;; ---------------
 (autoload 'markdown-mode "markdown-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 
-; ===========
-;  YASnippet
-; -----------
-;(add-to-list 'load-path
-;              (concat root "yas"))
-;(require 'yasnippet (concat root "yas/yasnippet.el"))
-;(yas/initialize)
-;(yas/load-directory (concat root "yas/snippets"))
+;; ===========
+;;  YASnippet
+;; -----------
+                                        ;(add-to-list 'load-path
+;;              (concat root "yas"))
+                                        ;(require 'yasnippet (concat root "yas/yasnippet.el"))
+                                        ;(yas/initialize)
+                                        ;(yas/load-directory (concat root "yas/snippets"))
 (require 'yasnippet)
 (yas-global-mode 1)
+(yas-load-directory (concat root "yas/snippets"))
 
+
+;; Usefull function to get the CamelCase version if an identifier.
 (defun camelize (s)
   "Transform 'tfw.web-service' into 'WebService'."
-  (mapconcat 'identity (mapcar 'capitalize (
-      split-string 
-      (
-        car 
-        (
-          last 
-          (
-            split-string 
-            s
-            "\\."
-          )
-        )
-      ) 
-      "-"
-    ) 
-  )  
-  ""))
-
-; ===========
-;  js2-mode
-; -----------
-(require 'js2-mode (concat root "elisp/js2-mode.el"))
+  (mapconcat 'identity (mapcar 'capitalize (split-string
+                                            (car (last (split-string s "\\." ) ) )
+                                            "-"
+                                            )) ""))
+;; ===========
+;;  js2-mode
+;; -----------
+;;; (require 'js2-mode (concat root "elisp/js2-mode.el"))
+(require 'js2-mode)
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.js.htm$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.jsn$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.jsn$" . json-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
-; ==============================================
-;  web-mode: https://github.com/fxbois/web-mode
-; ----------------------------------------------
+;; ==============================================
+;;  web-mode: https://github.com/fxbois/web-mode
+;; ----------------------------------------------
 (autoload 'web-mode "web-mode" nil t)
 (require 'web-mode (concat root "elisp/web-mode.el"))
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -179,7 +203,7 @@
 (defadvice grep-compute-defaults (around grep-compute-defaults-advice-null-device)
   "Use cygwin's /dev/null as the null-device."
   (let ((null-device "/dev/null"))
-	ad-do-it))
+    ad-do-it))
 (ad-activate 'grep-compute-defaults)
 (global-set-key [f8] 'occur)
 (global-set-key [(shift f8)] 'grep-find)
@@ -187,10 +211,10 @@
 
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(current-language-environment "UTF-8")
  '(iswitchb-mode t)
  '(js2-highlight-level 3)
@@ -199,10 +223,10 @@
  '(show-trailing-whitespace nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(font-lock-comment-face ((((class color) (min-colors 88) (background light)) (:foreground "#909090"))))
  '(font-lock-doc-face ((t (:foreground "#707070" :slant italic))))
  '(font-lock-string-face ((((class color) (min-colors 88) (background light)) (:foreground "#006000"))))
@@ -259,8 +283,8 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-hook 'yaml-mode-hook
-  '(lambda ()
-     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+          '(lambda ()
+             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 
 ;; =====================================
@@ -270,8 +294,8 @@
 (add-to-list 'load-path py-install-directory)
 (require 'python-mode)
 (setq py-load-pymacs-p t)
-; (require 'auto-complete-config)
-; (ac-config-default)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 
 (add-hook 'python-mode-hook (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
@@ -300,11 +324,6 @@
 ;; show column number in status bar
 (setq column-number-mode t)
 
-;; Maps F1 to give the manual entry for the current word
-(global-set-key [(f1)] (lambda () (interactive) (manual-entry (current-word))))
-
-
-
 
 (defun tolokoban-lines-toggle () (interactive) (global-linum-mode))
 (global-set-key [C-f4] 'tolokoban-lines-toggle)
@@ -315,16 +334,16 @@
 (global-set-key [C-tab] 'other-window)
 (global-set-key "\M-g" 'goto-line)
 
-                                        ; Restauration de la session précédente (mettre 1 pour l'activer)
+;; Restauration de la session précédente (mettre 1 pour l'activer)
 (desktop-save-mode 0)
 
 (server-start)
 
 
 
-                                        ; ===========
-                                        ;  Templates
-                                        ; -----------
+;; ===========
+;;  Templates
+;; -----------
 (require 'autoinsert)
 
 (global-set-key "(" 'skeleton-pair-insert-maybe)
@@ -404,9 +423,9 @@
 
 
 
-                                        ; ======================================
-                                        ;  Mode pour fichier batch sous windows
-                                        ; --------------------------------------
+;; ======================================
+;;  Mode pour fichier batch sous windows
+;; --------------------------------------
 (defvar bat-mode-keywords-list
   '("set" "if" "echo" "off" "exit" "goto" "pause"))
 (setq bat-mode-keywords-regexp (regexp-opt bat-mode-keywords-list 'words))
@@ -426,9 +445,9 @@
 (setq auto-mode-alist (cons '("\\.\\(bat\\|cmd\\)$" . bat-mode) auto-mode-alist))
 
 
-                                        ; =================================
-                                        ;  Mode pour fichier ini pour TFW.
-                                        ; ---------------------------------
+;; =================================
+;;  Mode pour fichier ini pour TFW.
+;; ---------------------------------
 (setq ini-mode-keywords
       '(
         ("^[ \t]*\\[[a-z]+\\][ \t]*$" . font-lock-function-name-face)
@@ -446,20 +465,20 @@
 (setq auto-mode-alist (cons '("\\.\\(ini\\)$" . ini-mode) auto-mode-alist))
 
 
-                                        ; =============================
-                                        ;  Mode pour fichiers log LODH
-                                        ; -----------------------------
+;; =============================
+;;  Mode pour fichiers log LODH
+;; -----------------------------
 (defvar log-mode-font-lock-defaults
-      '(
-;;	(auto-revert-tail-mode 1)
-        ("^[0-9]+ [0-9:\\.]+" . font-lock-comment-face)
-        ("\\*\\*\\* ERROR " . font-lock-warning-face)
-        ("\\*\\*\\* WARNING " . font-lock-warning-face)
-        (" \\[[a-zA-Z0-9 ]+\\] " . font-lock-constant-face)
-        ("\"[^\"\\n\\r]+\"" . hi-yellow);;font-lock-string-face)
-        ("\\(\\(  ==> \\)\\|\\(  <== \\)\\)[a-zA-Z_0-9\\.:]+" . font-lock-preprocessor-face)
-        )
-      )
+  '(
+    ;;  (auto-revert-tail-mode 1)
+    ("^[0-9]+ [0-9:\\.]+" . font-lock-comment-face)
+    ("\\*\\*\\* ERROR " . font-lock-warning-face)
+    ("\\*\\*\\* WARNING " . font-lock-warning-face)
+    (" \\[[a-zA-Z0-9 ]+\\] " . font-lock-constant-face)
+    ("\"[^\"\\n\\r]+\"" . hi-yellow);;font-lock-string-face)
+    ("\\(\\(  ==> \\)\\|\\(  <== \\)\\)[a-zA-Z_0-9\\.:]+" . font-lock-preprocessor-face)
+    )
+  )
 (define-derived-mode log-mode fundamental-mode
   (setq font-lock-defaults '(log-mode-font-lock-defaults))
   ;; Supprimer la coloration par défaut des chaînes de caractère.
@@ -470,7 +489,7 @@
 
 
 
-                                        ; Compilation LaTeX en une seule touche : F12
+;; Compilation LaTeX en une seule touche : F12
 (defun tolokoban-latex-compile-as-dvi-and-view-as-pdf ()
   "Compiler du Tex en PDF puis afficher le resultat.
 
@@ -501,8 +520,8 @@ Puis affichage avec evince."
     (setq cmd (concat
                cmd
                "latex " tex " "
-;               "&& makeindex " idx " "
-;               "&& latex " tex " "
+               ;;               "&& makeindex " idx " "
+               ;;               "&& latex " tex " "
                "&& dvips " dvi " "
                "&& ps2pdf " ps " "
                "&& start " pdf))
@@ -510,26 +529,26 @@ Puis affichage avec evince."
 (global-set-key (kbd "<f12>") 'tolokoban-latex-compile-as-dvi-and-view-as-pdf)
 
 
-                                        ; ======================================
-                                        ;  Définition de Toloframework sur F11.
-                                        ; --------------------------------------
+;; ======================================
+;;  Définition de Toloframework sur F11.
+;; --------------------------------------
 (defun tfw ()
   "Toloframework compiler.
 
-Extrait la documentation et un fichier compressé d'un script javascript à
+Extrait la documentation et un fichier compressé d'un script javascript �
 l'extension <*.js>."
   (interactive)
   (progn
     (save-buffer)
     (shell-command (concat "python D:/Code/publicator/prj/ToloFrameWork/tfw.py "
                            buffer-file-name))
-;                           " D:/Code/www/TFW/@"))
+    ;;                           " D:/Code/www/TFW/@"))
     )
   )
 (global-set-key (kbd "<f11>") 'tfw)
 
-                                        ; ====================================
-                                        ; Permet d'indenter un fichier entier.
+;; ====================================
+;; Permet d'indenter un fichier entier.
 (defun iwb ()
   "indent whole buffer"
   (interactive)
@@ -565,7 +584,7 @@ http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
 this.  The function inserts linebreaks to separate tags that have
 nothing but whitespace between them.  It then indents the markup
 by using nxml's indentation rules."
-                                        ;  (interactive "r")
+  ;;  (interactive "r")
   (interactive)
   (let (begin end)
     (setq begin (point-min))
@@ -574,24 +593,24 @@ by using nxml's indentation rules."
       (mark-whole-buffer)
       (nxml-mode)
       (beginning-of-buffer)
-                                        ;    (mark-whole-buffer)
+      ;;    (mark-whole-buffer)
       (while (search-forward-regexp "\>[ \\t]*\<" nil t)
         (backward-char)
-	(insert "\n"))
+        (insert "\n"))
       (iwb))
     (message "XML is now in pretty print format!")
     (beginning-of-buffer)))
 (global-set-key [(shift f10)] 'bf-pretty-print-xml-region)
 
 
-                                        ; ============
-                                        ;  Mode LaTeX
-                                        ; ------------
+;; ============
+;;  Mode LaTeX
+;; ------------
 (add-to-list 'auto-mode-alist '("tex$" . latex-mode))
 
-					; ================
-					;  Mode pour HTML
-					; ----------------
+;; ================
+;;  Mode pour HTML
+;; ----------------
 (defun my-html-mode-hook ()
   (setq tab-width 2)
   (setq indent-tabs-mode t)
@@ -630,19 +649,55 @@ by using nxml's indentation rules."
           (kill-buffer)
           (universal-coding-system-argument utf-16)
           (find-file path)
-        )
+          )
+      )
     )
   )
-)
 
-					; =========================
-					;  Agencement des fenêtres
-					; -------------------------
+;; =========================
+;;  Agencement des fenêtres
+;; -------------------------
 (delete-other-windows)
 (find-file (concat "~/todo.org"))
 (split-window-right)
+(find-file (concat "~/.emacs.d/init.el"))
+
+;; Open Recent File Menu.
+(require 'recentf)
+(recentf-mode 1)
+
+;; No start-up screen.                                        ;
+(setq inhibit-startup-screen t)
+
+;; Multiple Cursors.
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+;; Ivy : http://oremacs.com/swiper/
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
 
+;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
-
-(recover-session)
