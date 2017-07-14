@@ -1,0 +1,124 @@
+#+STARTUP: overview
+#+TODO: TODO(t) BUG(b) | DONE(d!) TEST(v!) FIXED(f!) WAIT(w!) CANCELED(c!) REFUSED(r@/!)
+#+ARCHIVE: %s_done::
+
+* Comment utiliser cette liste des tâches.
+[[http://orgmode.org/orgguide.pdf][Org Mode Guide]]
+
+| S-M-RET         | Créer un nouveau Task.                                         |
+| C-c C-t         | Choisir l'état d'un Task.                                      |
+| C-c / t         | Afficher uniquement les Task qui sont dans l'état TODO ou BUG. |
+| S-RIGHT, S-LEFT | Cycler parmi les états d'un Task.                              |
+| M-RIGHT, M-LEFT | Indenter ou déindenter d'un niveau.                            |
+| A-UP, A-DOWN    | Déplacer les sections.                                         |
+| C-c ,           | Choisir la priorité d'un Task.                                 |
+| S-UP, S-DOWN    | Monter ou descendre la priorité.                               |
+| C-c .           | Définir une date pour l'agenda.                                |
+| C-c C-l         | Afficher un hyperlien.                                         |
+| C-c C-o         | Suivre un lien.                                                |
+
+Il est possible de mettre l'état d'avancement d'une Task en l'ajoutant entre crochets à la fin de la ligne.
+Par exemple : [45%] ou [1/3].
+
+* Dired
+** C-x C-q : make the dired buffer editable.
+A utiliser avec le multi-curseur pour des renommages en masse.
+C-x C-s pour sauvegarder les modifications.
+    ;; allow editing file permissions
+    (setq wdired-allow-to-change-permissions t)
+** M-x diredful-add : Font face by file extension.
+Use the diredful package.
+** dired-narrow
+*** / : Filtrer les fichiers pour n'en afficher que certains.
+* Manipulation de texte
+** C-t : Inverser deux lettres.
+** A-t : Inverser deux mots.
+** M-0 M-q : Justifier une région.
+** M-- M-c : Capitaliser le mot précédent.
+** M-- M-l : Mettre en minuscule le mot précédent.
+** M-- M-u : Mettre en majuscule le mot précédent.
+** M-% C-q C-m RET RET : Retirer les ^M en fin de lignes.
+* Caractères invisibles
+** C-q C-i : \t
+** C-q C-j : \n
+** C-q C-m : \r
+* Encoding (UTF-8, cp1252, ...)
+Dans la barre d'information, le premier caractère à gauche indique l'encoding.
+Passez la souris dessus pour plus d'information.
+** C-h S-c : Décrire l'encoding actuellement utilisé.
+** C-x RET f cp1252 RET : Définir l'encoding à utiliser.
+A  partir de  là, les  sauvegardes  ou les  reverts se  feront dans  cet
+encoding. Si un  caractère ne peut être encodé de  cette façon, Emacs le
+dira lors de la sauvegarde.
+** C-x RET c cp1252 RET C-x C-f <FILENAME> RET : Lire un fichier dont on sait qu'il est encodé en cp1252.
+** C-x RET c cp1252 RET C-x C-s : Sauvegarder le fichier courant en le convertissant en cp1252.
+** C-x RET r cp1252 RET : Relire le fichier courant, mais en forçant l'encoding.
+** M-x find-file-literally : Lire un fichier sans transformation due à un encoding.
+* Affichage en Hexadecimal
+** M-x hexl-mode
+* Macros
+** F3 : Commencer la macro, ou afficher la valeur du compteur.
+** F4 : Terminer la macro, ou réexécuter la macro.
+** Compteurs
+**** F3 : Afficher la valeur du compteur quand une macro est en cours d'enregistrement.
+**** C-x C-k C-c : Initialiser le compteur avec la valeur numérique spécifiée.
+**** C-x C-k C-a : Ajouter une valeur au compteur.
+** Réutiliser une macro (sans F4)
+*** C-x C-k b : Associer la dernière macro à une touche pendant la durée de la session.
+*** C-x C-k n : Donner un nom à la macro.
+*** M-x insert-kbd-macro : Afficher la liste des touches de la dernière macro dans le buffer.
+*** C-x C-k C-e : Editer la dernière macro.
+**** C-c C-c : Valider les changements.
+**** C-h m : Afficher l'aide sur ce mode.
+*** C-x C-k SPC : Passer en mode debug de la macro.
+**** SPC : Continuer.
+**** DEL : Supprimer cette touche de la macro.
+**** f : Sauter cette touche mais ne pas l'effacer.
+**** c : Continuer d'exécuter le reste de la macro sans debug.
+**** I KEY : Ajouter une touche à la macro.
+**** i KEY... C-j : Ajouter une série de touches à la macro (pas le C-j biensûr).
+**** q : Quitter le mode debug.
+* Recherches et transformations
+** C-s
+Recherche incrémentale (utiliser C-x C-x pour revenir au point de départ).
+** M-x occur
+Rechercher une expression régulière dans le buffer courant et afficher le résultat avec des hyper-liens.
+** M-x flush-lines RET regexp RET
+Supprimer toutes les lignes (à partir du curseur) qui contiennent l'expression régulière.
+** M-x keep-lines RET regexp RET
+Supprimer toutes les lignes (à partir du curseur) qui ne contiennent pas l'expression régulière.
+** M-x grep-find
+Rechercher dans tous les fichiers à partir du répertoire du buffer courant.
+** M-x re-builder
+Tester une expression régulière sur le buffer courant
+** C-c C-b : reb-change-target-buffer.
+** C-c C-c : reb-toggle-case.
+** C-c C-e : reb-enter-subexp-mode.
+** C-c TAB : reb-change-syntax.
+** C-c C-q : reb-quit.
+** C-c C-r : reb-prev-match.
+** C-c C-s : reb-next-match.
+** C-c C-u : reb-force-update.
+** C-c C-w : reb-copy.
+** Expressions régulières
+** \\\< : Début de mot.
+** \\\> : Fin de mot.
+** \\w : Caractère d'un mot.
+** \\W : Caractère ne provenant pas d'un mot.
+* Conversions des fins de lignes
+** M-x set-buffer-file-coding-system <CODING-SYSTEM>
+Pour trouver le CODING-SYSTEM, exécutez la commande suivante : M-x list-coding-systems
+Les plus courants sont : dos, unix, mac.
+
+* Multi curseurs
+** C-S-mouse   Add new cursor under mouse.    
+** C->         Add cursor on next mark matching.
+** C-<         Add cursor on previous mark matching.
+* Bookmarks
+** <C-f2> bm-toggle
+** <f2> bm-next
+** <S-f2> bm-previous
+* Parenthèses, crochets, accolades
+** C-M-n : Aller à la par/cro/acc fermant le bloc courant.
+** C-M-p : Aller à la par/cro/acc ouvrant le bloc courant.
+

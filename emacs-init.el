@@ -37,15 +37,15 @@ Return a list of installed packages or nil for every skipped package."
 
 (ensure-package-installed 'use-package
                           'dash
-			  'yasnippet
-			  'json-mode
-			  'js2-mode
-			  'dired-narrow
-			  'dired-subtree
+                          'yasnippet
+                          'json-mode
+                          'js2-mode
+                          'dired-narrow
+                          'dired-subtree
                           'diredful
-			  'swiper
-			  'counsel
-			  'ivy)
+                          'swiper
+                          'counsel
+                          'ivy)
 
 (require 'use-package)
 
@@ -691,15 +691,6 @@ by using nxml's indentation rules."
     )
   )
 
-;; =========================
-;;  Agencement des fenÃªtres
-;; -------------------------
-(delete-other-windows)
-(find-file (concat "~/todo.org"))
-(split-window-right)
-(find-file (concat root "emacs-init.el"))
-
-
 ;; Open Recent File Menu.
 (require 'recentf)
 (recentf-mode 1)
@@ -742,5 +733,28 @@ by using nxml's indentation rules."
          ("C-x l" . counsel-locate)
          ("C-S-o" . counsel-rhythmbox)))
 
+;; Bookmarks.
+(use-package bm
+  :bind (("<C-f2>" . bm-toggle)
+         ("<f2>" . bm-next)
+         ("<S-f2>" . bm-previous)))
+
+;; Markdown mode.
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
+
+;; =========================
+;;  Agencement des fenÃªtres
+;; -------------------------
+(delete-other-windows)
+(find-file (concat "~/todo.org"))
+(split-window-right)
+(find-file (concat root "emacs.org"))
