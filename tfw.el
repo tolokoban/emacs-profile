@@ -58,5 +58,34 @@
 (global-set-key (kbd "C-S-t h" ) 'tfw-menu)
 
 
+
+(defun toloframework-main-menu ()
+  "This is the ToloFrameWork main menu."
+  (interactive)
+  (let* (
+         (current (current-buffer))
+         (basename (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))
+         (new (get-buffer-create "*ToloFrameWork*")) )
+    
+    (set-buffer new)
+    (erase-buffer)
+    (text-mode)
+
+    (setq extensions '("css" "js" "ini" "dep"))
+    (dolist (ext extensions)
+      (insert (propertize
+               (concat "[" (substring ext 0 1) "]")
+               'font-lock-face '(:foreground "blue" :weight bold)))
+      (insert (propertize (concat " " basename) 'font-lock-face 'font-lock-comment-face))
+      (insert (concat "." ext))
+      (insert "  ")
+      )
+    
+    (insert "\n")
+    ))
+
+(global-set-key (kbd "<f12>" ) 'toloframework-main-menu)
+
+
 (provide 'tfw)
 ;;; tfw.el ends here
