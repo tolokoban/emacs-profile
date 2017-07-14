@@ -43,6 +43,7 @@ Return a list of installed packages or nil for every skipped package."
 			  'dired-narrow
 			  'dired-subtree
                           'diredful
+                          'multiple-cursors
 			  'swiper
 			  'counsel
 			  'ivy)
