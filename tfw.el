@@ -66,8 +66,9 @@
          (current (current-buffer))
          (basename (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))
          (new (get-buffer-create "*ToloFrameWork*")) )
-    
+
     (set-buffer new)
+    (switch-to-buffer new)
     (erase-buffer)
     (text-mode)
 
@@ -80,8 +81,11 @@
       (insert (concat "." ext))
       (insert "  ")
       )
-    
-    (insert "\n")
+
+    (insert "\n\n")
+    (insert (propertize (concat "[q]") 'font-lock-face '(:foreground "blue" :weight bold)))
+    (insert " Back to " 
+            (propertize (buffer-name current) 'font-lock-face '(:foreground "#080")))
     ))
 
 (global-set-key (kbd "<f12>" ) 'toloframework-main-menu)
