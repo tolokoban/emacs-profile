@@ -595,24 +595,8 @@ l'extension <*.js>."
 (global-set-key (kbd "<f10>") 'iwb)
 
 
-(defun insertGetterSetter (name)
-  "Insert Getter/Setter"
-  (interactive "sAttribute's name: ")
-
-  (progn
-    (insert (concat "/**\n"
-                    " * Accessor for attribute " name "\n"
-                    " * @return " name "\n"
-                    " */\n"
-                    name ": function(v) {\n"
-                    "  if (v === undefined) return this._" name ";\n"
-                    "  this._" name " = v;\n"
-                    "  return this;\n"
-                    "}"))
-    (iwb)
-    )
-  )
-(global-set-key (kbd "<f9>") 'insertGetterSetter)
+;; Compare Windows side by side.
+(global-set-key (kbd "<f9>") 'compare-windows)
 
 
 (defun bf-pretty-print-xml-region ()
