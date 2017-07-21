@@ -28,35 +28,35 @@
 (defun tfw-switch-css ()
   "Switch a TFW module to the CSS part."
   (interactive)
-  (progn (find-file (concat (file-name-sans-extension (buffer-file-name)) ".css")) ) )
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".css")))
+    (other-window 1)
+    (find-file fname) ) )
 
 (defun tfw-switch-js ()
   "Switch a TFW module to the JS part."
   (interactive)
-  (progn (find-file (concat (file-name-sans-extension (buffer-file-name)) ".js")) ) )
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".js")))
+    (other-window 1)
+    (find-file fname) ) )
 
 (defun tfw-switch-ini ()
   "Switch a TFW module to the INI part."
   (interactive)
-  (progn (find-file (concat (file-name-sans-extension (buffer-file-name)) ".ini")) ) )
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".ini")))
+    (other-window 1)
+    (find-file fname) ) )
 
 (defun tfw-switch-dep ()
   "Switch a TFW module to the DEP part."
   (interactive)
-  (progn (find-file (concat (file-name-sans-extension (buffer-file-name)) ".dep")) ) )
-
-(defun tfw-menu ()
-  "Affiche les touches disponibles pour le TFW."
-  (interactive)
-  (progn (message "[C]ss, [J]avascript, [I]nternational, [D]ependencies") ) )
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".dep")))
+    (other-window 1)
+    (find-file fname) ) )
 
 (global-set-key (kbd "C-S-t c" ) 'tfw-switch-css)
 (global-set-key (kbd "C-S-t j" ) 'tfw-switch-js)
 (global-set-key (kbd "C-S-t i" ) 'tfw-switch-ini)
 (global-set-key (kbd "C-S-t d" ) 'tfw-switch-dep)
-
-(global-set-key (kbd "C-S-t h" ) 'tfw-menu)
-
 
 
 (defun toloframework-main-menu ()
@@ -66,8 +66,10 @@
          (current (current-buffer))
          (basename (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))
          (new (get-buffer-create "*ToloFrameWork*")) )
-    
+
     (set-buffer new)
+    (other-window 1)
+    (switch-to-buffer new)
     (erase-buffer)
     (text-mode)
 
@@ -80,8 +82,11 @@
       (insert (concat "." ext))
       (insert "  ")
       )
-    
-    (insert "\n")
+
+    (insert "\n\n")
+    (insert (propertize (concat "[q]") 'font-lock-face '(:foreground "blue" :weight bold)))
+    (insert " Back to "
+            (propertize (buffer-name current) 'font-lock-face '(:foreground "#080")))
     ))
 
 (global-set-key (kbd "<f12>" ) 'toloframework-main-menu)

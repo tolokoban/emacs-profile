@@ -37,16 +37,22 @@ Return a list of installed packages or nil for every skipped package."
 
 (ensure-package-installed 'use-package
                           'dash
-			  'yasnippet
-			  'json-mode
-			  'js2-mode
-			  'dired-narrow
-			  'dired-subtree
+                          'yasnippet
+                          'json-mode
+                          'js2-mode
+                          'dired-narrow
+                          'dired-subtree
                           'diredful
+<<<<<<< HEAD
                           'multiple-cursors
 			  'swiper
 			  'counsel
 			  'ivy)
+=======
+                          'swiper
+                          'counsel
+                          'ivy)
+>>>>>>> 0254af0ed8aeb3b8bbb18ca110237dbaa44ba110
 
 (require 'use-package)
 
@@ -596,8 +602,24 @@ l'extension <*.js>."
 (global-set-key (kbd "<f10>") 'iwb)
 
 
-;; Compare Windows side by side.
-(global-set-key (kbd "<f9>") 'compare-windows)
+(defun insertGetterSetter (name)
+  "Insert Getter/Setter"
+  (interactive "sAttribute's name: ")
+
+  (progn
+    (insert (concat "/**\n"
+                    " * Accessor for attribute " name "\n"
+                    " * @return " name "\n"
+                    " */\n"
+                    name ": function(v) {\n"
+                    "  if (v === undefined) return this._" name ";\n"
+                    "  this._" name " = v;\n"
+                    "  return this;\n"
+                    "}"))
+    (iwb)
+    )
+  )
+(global-set-key (kbd "<f9>") 'insertGetterSetter)
 
 
 (defun bf-pretty-print-xml-region ()
@@ -676,15 +698,6 @@ by using nxml's indentation rules."
     )
   )
 
-;; =========================
-;;  Agencement des fenÃªtres
-;; -------------------------
-(delete-other-windows)
-(find-file (concat "~/todo.org"))
-(split-window-right)
-(find-file (concat root "emacs-init.el"))
-
-
 ;; Open Recent File Menu.
 (require 'recentf)
 (recentf-mode 1)
@@ -741,5 +754,14 @@ by using nxml's indentation rules."
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
+
+;; =========================
+;;  Agencement des fenÃªtres
+;; -------------------------
+(delete-other-windows)
+(find-file (concat "~/todo.org"))
+(split-window-right)
+(find-file (concat root "emacs.org"))
