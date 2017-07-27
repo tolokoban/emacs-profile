@@ -53,10 +53,26 @@
     (other-window 1)
     (find-file fname) ) )
 
+(defun tfw-switch-vert ()
+  "Switch a TFW module to the VERT part."
+  (interactive)
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".vert")))
+    (other-window 1)
+    (find-file fname) ) )
+
+(defun tfw-switch-frag ()
+  "Switch a TFW module to the FRAG part."
+  (interactive)
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".frag")))
+    (other-window 1)
+    (find-file fname) ) )
+
 (global-set-key (kbd "C-S-t c" ) 'tfw-switch-css)
 (global-set-key (kbd "C-S-t j" ) 'tfw-switch-js)
 (global-set-key (kbd "C-S-t i" ) 'tfw-switch-ini)
 (global-set-key (kbd "C-S-t d" ) 'tfw-switch-dep)
+(global-set-key (kbd "C-S-t v" ) 'tfw-switch-vert)
+(global-set-key (kbd "C-S-t f" ) 'tfw-switch-frag)
 
 
 (defun toloframework-main-menu ()

@@ -36,6 +36,7 @@ Return a list of installed packages or nil for every skipped package."
     (package-refresh-contents))
 
 (ensure-package-installed 'use-package
+                          'glsl-mode
                           'dash
 			  'yasnippet
 			  'json-mode
@@ -216,6 +217,12 @@ Return a list of installed packages or nil for every skipped package."
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.jsn$" . json-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
+;; ===========
+;;  GLSL mode
+;; -----------
+(add-to-list 'auto-mode-alist '("\\.vert$" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.frag$" . glsl-mode))
 
 ;; ==============================================
 ;;  web-mode: https://github.com/fxbois/web-mode
@@ -715,7 +722,7 @@ by using nxml's indentation rules."
          ("C-c C-r" . ivy-resume)
          ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)
+         ;;("C-x C-f" . counsel-find-file)
          ("<f1> f" . counsel-describe-function)
          ("<f1> v" . counsel-describe-variable)
          ("<f1> l" . counsel-find-library)
