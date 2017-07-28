@@ -44,10 +44,7 @@ Return a list of installed packages or nil for every skipped package."
 			  'dired-narrow
 			  'dired-subtree
                           'diredful
-                          'multiple-cursors
-			  'swiper
-			  'counsel
-			  'ivy)
+                          'multiple-cursors)
 
 (require 'use-package)
 
@@ -708,31 +705,6 @@ by using nxml's indentation rules."
          ("C-c C-<" . mc/mark-all-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)
          ))
-
-;; Ivy : http://oremacs.com/swiper/
-(use-package swiper)
-(use-package counsel)
-(use-package ivy
-  :init (progn
-          (ivy-mode 1)
-          (setq ivy-use-virtual-buffers t)
-          (setq enable-recursive-minibuffers t)
-          (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
-  :bind (("\C-s" . swiper)
-         ("C-c C-r" . ivy-resume)
-         ("<f6>" . ivy-resume)
-         ("M-x" . counsel-M-x)
-         ;;("C-x C-f" . counsel-find-file)
-         ("<f1> f" . counsel-describe-function)
-         ("<f1> v" . counsel-describe-variable)
-         ("<f1> l" . counsel-find-library)
-         ("<f2> i" . counsel-info-lookup-symbol)
-         ("<f2> u" . counsel-unicode-char)
-         ("C-c g" . counsel-git)
-         ("C-c j" . counsel-git-grep)
-         ("C-c k" . counsel-ag)
-         ("C-x l" . counsel-locate)
-         ("C-S-o" . counsel-rhythmbox)))
 
 ;; Bookmarks.
 (use-package bm
