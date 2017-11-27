@@ -39,6 +39,13 @@
     (other-window 1)
     (find-file fname) ) )
 
+(defun tfw-switch-xjs ()
+  "Switch a TFW module to the XJS part."
+  (interactive)
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".xjs")))
+    (other-window 1)
+    (find-file fname) ) )
+
 (defun tfw-switch-ini ()
   "Switch a TFW module to the INI part."
   (interactive)
@@ -73,6 +80,7 @@
 (global-set-key (kbd "C-S-t d" ) 'tfw-switch-dep)
 (global-set-key (kbd "C-S-t v" ) 'tfw-switch-vert)
 (global-set-key (kbd "C-S-t f" ) 'tfw-switch-frag)
+(global-set-key (kbd "C-S-t x" ) 'tfw-switch-xjs)
 
 
 (defun toloframework-main-menu ()
@@ -110,3 +118,16 @@
 
 (provide 'tfw)
 ;;; tfw.el ends here
+
+
+;; Syntax highlighting for XJS files.
+(setq xjs-highlights
+      '((",\\|//[^\n\r]*[\n\r]+" . font-lock-comment-face)
+        ("{[:space:]*\\(Attrib\\|Toggle\\|View\\|Set\\|Data\\)" . font-lock-constant-face)
+        ("[a-z]+\\.[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-function-name-face)
+        ("[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-variable-name-face)
+        ("[{}\\[]\\|]" . font-lock-constant-face)))
+(define-derived-mode xjs-mode fundamental-mode "xjs"
+  "Major mode for XJS code used in the Toloframework."
+  (setq font-lock-defaults '(xjs-highlights)))
+(provide 'xjs-mode)

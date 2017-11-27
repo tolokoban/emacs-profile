@@ -186,19 +186,6 @@ Return a list of installed packages or nil for every skipped package."
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 
-;; ===========
-;;  YASnippet
-;; -----------
-                                        ;(add-to-list 'load-path
-;;              (concat root "yas"))
-                                        ;(require 'yasnippet (concat root "yas/yasnippet.el"))
-                                        ;(yas/initialize)
-                                        ;(yas/load-directory (concat root "yas/snippets"))
-(require 'yasnippet)
-(yas-global-mode 1)
-(yas-load-directory (concat root "yas/snippets"))
-
-
 ;; Usefull function to get the CamelCase version if an identifier.
 (defun camelize (s)
   "Transform 'tfw.web-service' into 'WebService'."
@@ -748,5 +735,14 @@ by using nxml's indentation rules."
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+
+;; ===========
+;;  YASnippet
+;; -----------
+(require 'yasnippet)
+(yas-global-mode 1)
+(yas-load-directory (concat root "yas/snippets"))
+
+
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
