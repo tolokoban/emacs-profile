@@ -123,11 +123,37 @@
 ;; Syntax highlighting for XJS files.
 (setq xjs-highlights
       '((",\\|//[^\n\r]*[\n\r]+" . font-lock-comment-face)
-        ("{[:space:]*\\(Attrib\\|Toggle\\|View\\|Set\\|Data\\)" . font-lock-constant-face)
-        ("[a-z]+\\.[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-function-name-face)
         ("[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-variable-name-face)
-        ("[{}\\[]\\|]" . font-lock-constant-face)))
+        ("[a-z]+\\.[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-function-name-face)        
+        ("{[:space:]*[a-zA-Z]*?[a-z][a-zA-Z]*[ \n\r]" . font-lock-constant-face)
+        ("{[:space:]*[A-Z]+}" . font-lock-type-face)
+        ("{[:space:]*[A-Z]+" . font-lock-type-face)
+        ("[{}]" . font-lock-constant-face)
+        ("[\\[]]" . font-lock-builtin-face)))
 (define-derived-mode xjs-mode fundamental-mode "xjs"
   "Major mode for XJS code used in the Toloframework."
+  (make-local-variable 'xjs-indent-offset)
+  (set (make-local-variable 'xjs-indent-function) 'xjs-indent-line)
   (setq font-lock-defaults '(xjs-highlights)))
+(add-to-list 'auto-mode-alist '("\\.xjs$" . xjs-mode))
+
+(defvar xjs-indent-line 2 "Indentation offset for `xjs-mode'.")
+(defun xjs-indent-function ()
+  "Indent current line for `xjs-mode'."
+  (interactive)
+  (let ((indent-col 0))
+    (save-excursion
+      (beginning-of-line)
+      (condition-case nil
+          (while t
+            (backward-up-list 1)
+            (when (looking-at "[[{]")
+              (setq indent-col (+ indent-col xjs-indent-offset))
+              (message (concat "indent-col: " indent-col))))
+        (error nil)))
+    (save-excursion
+      (back-to-indentation)
+      (when (and (looking-at "[]}]") (>= indent-col xjs-indent-offset))
+        (setq indent-col (- indent-col xjs-indent-offset))))
+    (indent-line-to indent-col)))
 (provide 'xjs-mode)
