@@ -36,6 +36,7 @@ Return a list of installed packages or nil for every skipped package."
     (package-refresh-contents))
 
 (ensure-package-installed 'use-package
+                          'auto-complete
                           'glsl-mode
                           'dash
 			  'yasnippet
@@ -55,6 +56,9 @@ Return a list of installed packages or nil for every skipped package."
 ;; Corriger le problème des accents circonflexes.
 (load-library "iso-transl")
 
+;; Auto-complete
+(require 'auto-complete-config)
+(ac-config-default)
 
 ;; =====
 ;; Dired
