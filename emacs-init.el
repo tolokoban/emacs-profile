@@ -1,3 +1,4 @@
+
 ;;; Pour utiliser ce fichier, ajouter ceci dans votre fichier ".emacs" :
 ;;;    (setq root "~/Code/tolokoban/")
 ;;;    (load-file (concat root "emacs/emacs-init.el"))
@@ -11,7 +12,7 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+;;(package-initialize)
 
 ;; ========================
 ;; Install needed packages.
@@ -57,8 +58,8 @@ Return a list of installed packages or nil for every skipped package."
 (load-library "iso-transl")
 
 ;; Auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
 
 ;; =====
 ;; Dired
@@ -164,7 +165,7 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; Remplace les tabulations par des espaces lors de l'indentation.
-(setq tab-width 2)
+(setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
 ;; Permet de colorier des portions de text avec des expressions rÃ©guliÃ¨res.
@@ -722,3 +723,5 @@ by using nxml's indentation rules."
 
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
+
+(setq-default fill-column 100)

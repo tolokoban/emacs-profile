@@ -123,6 +123,8 @@
 ;; Syntax highlighting for XJS files.
 (setq xjs-highlights
       '((",\\|//[^\n\r]*[\n\r]+" . font-lock-comment-face)
+        ("/\\*([^\\*]+|\\*[^/])*\\*/" . font-lock-comment-face)
+        ("%[a-zA-Z]+%" . font-lock-preprocessor-face)
         ("[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-variable-name-face)
         ("[a-z]+\\.[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-function-name-face)        
         ("{[:space:]*[a-zA-Z]*?[a-z][a-zA-Z]*[ \n\r]" . font-lock-constant-face)
