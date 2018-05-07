@@ -89,6 +89,7 @@
   (let* (
          (current (current-buffer))
          (basename (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))
+         (noext (file-name-sans-extension (buffer-file-name)))
          (new (get-buffer-create "*ToloFrameWork*")) )
 
     (set-buffer new)
@@ -97,20 +98,74 @@
     (erase-buffer)
     (text-mode)
 
-    (setq extensions '("css" "js" "ini" "dep"))
+    (setq extensions '("css" "js" "ini" "dep" "vert" "frag"))
     (dolist (ext extensions)
       (insert (propertize
                (concat "[" (substring ext 0 1) "]")
                'font-lock-face '(:foreground "blue" :weight bold)))
       (insert (propertize (concat " " basename) 'font-lock-face 'font-lock-comment-face))
       (insert (concat "." ext))
-      (insert "  ")
+      (insert "\n")
       )
 
     (insert "\n\n")
     (insert (propertize (concat "[q]") 'font-lock-face '(:foreground "blue" :weight bold)))
     (insert " Back to "
             (propertize (buffer-name current) 'font-lock-face '(:foreground "#080")))
+    ;; Private functions
+    (defun tfw-local-switch-css ()
+      "Switch a TFW module to the CSS part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".css"))))
+    (defun tfw-local-switch-js ()
+      "Switch a TFW module to the JS part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".js"))))
+    (defun tfw-local-switch-ini ()
+      "Switch a TFW module to the INI part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".ini"))))
+    (defun tfw-local-switch-dep ()
+      "Switch a TFW module to the DEP part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".dep"))))
+    (defun tfw-local-switch-xjs ()
+      "Switch a TFW module to the XJS part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".xjs"))))
+    (defun tfw-local-switch-vert ()
+      "Switch a TFW module to the VERT part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".vert"))))
+    (defun tfw-local-switch-frag ()
+      "Switch a TFW module to the FRAG part."
+      (interactive)
+      (let ()
+        (kill-buffer)
+        (find-file (concat noext ".frag"))))
+
+    ;; Hook the keys.
+    (local-set-key "c" 'tfw-local-switch-css)
+    (local-set-key "j" 'tfw-local-switch-js)
+    (local-set-key "i" 'tfw-local-switch-ini)
+    (local-set-key "d" 'tfw-local-switch-dep)
+    (local-set-key "v" 'tfw-local-switch-vert)
+    (local-set-key "f" 'tfw-local-switch-frag)
+    (local-set-key "x" 'tfw-local-switch-xjs)
+
+    (local-set-key "q" 'kill-buffer)
     ))
 
 (global-set-key (kbd "<f12>" ) 'toloframework-main-menu)
@@ -126,7 +181,7 @@
         ("/\\*([^\\*]+|\\*[^/])*\\*/" . font-lock-comment-face)
         ("%[a-zA-Z]+%" . font-lock-preprocessor-face)
         ("[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-variable-name-face)
-        ("[a-z]+\\.[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-function-name-face)        
+        ("[a-z]+\\.[^ \n\r\t{},'\":]+[:space:]*:" . font-lock-function-name-face)
         ("{[:space:]*[a-zA-Z]*?[a-z][a-zA-Z]*[ \n\r]" . font-lock-constant-face)
         ("{[:space:]*[A-Z]+}" . font-lock-type-face)
         ("{[:space:]*[A-Z]+" . font-lock-type-face)

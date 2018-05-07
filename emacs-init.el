@@ -37,10 +37,8 @@ Return a list of installed packages or nil for every skipped package."
     (package-refresh-contents))
 
 (ensure-package-installed 'use-package
-                          'auto-complete
                           'glsl-mode
                           'dash
-			  'yasnippet
 			  'json-mode
 			  'js2-mode
 			  'dired-narrow
@@ -60,6 +58,8 @@ Return a list of installed packages or nil for every skipped package."
 ;; Auto-complete
 ;; (require 'auto-complete-config)
 ;; (ac-config-default)
+;;(require 'auto-complete-config)
+;;(ac-config-default)
 
 ;; =====
 ;; Dired
@@ -560,7 +560,6 @@ Puis affichage avec evince."
                "&& ps2pdf " ps " "
                "&& start " pdf))
     (shell-command cmd)))
-(global-set-key (kbd "<f12>") 'tolokoban-latex-compile-as-dvi-and-view-as-pdf)
 
 
 ;; ======================================
@@ -718,10 +717,14 @@ by using nxml's indentation rules."
 ;; -----------
 (require 'yasnippet)
 (yas-global-mode 1)
-(yas-load-directory (concat root "yas/snippets"))
+(setq yas-installed-snippets-dir (concat root "yas/snippets"))
+;; (yas-load-directory (concat root "yas/snippets"))
+
+(global-set-key (kbd "<f1>") 'yas-expand)
 
 
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
 
 (setq-default fill-column 100)
+
