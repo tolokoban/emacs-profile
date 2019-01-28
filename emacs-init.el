@@ -9,9 +9,9 @@
 ;; -----
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+             '("melpa" . "http://melpa.org/packages/") t)
 ;;(package-initialize)
 
 ;; ========================
@@ -36,13 +36,15 @@ Return a list of installed packages or nil for every skipped package."
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
+
+
 (ensure-package-installed 'use-package
                           'glsl-mode
                           'dash
-			  'json-mode
-			  'js2-mode
-			  'dired-narrow
-			  'dired-subtree
+                          'json-mode
+                          'js2-mode
+                          'dired-narrow
+                          'dired-subtree
                           'diredful
                           'multiple-cursors)
 
@@ -728,3 +730,35 @@ by using nxml's indentation rules."
 
 (setq-default fill-column 100)
 
+
+;; ================================
+;; ESLint on the fly for Javascript
+;; --------------------------------
+
+;; http://www.flycheck.org/manual/latest/index.html
+(require 'flycheck)
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))

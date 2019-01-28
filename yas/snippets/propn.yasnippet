@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: propn
+# key: propn
+# --
+#region Notification Property: $1
+private ${2:string} _${1:$(downcase yas-text)};
+public $2 $1
+{
+    get => _${1:$(downcase yas-text)};
+    set => SetProperty(ref _${1:$(downcase yas-text)}, value);
+}
+#endregion
