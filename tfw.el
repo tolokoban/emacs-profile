@@ -136,25 +136,29 @@
       (interactive)
       (let ()
         (kill-buffer)
-        (find-file (concat noext ".dep"))))
+        (find-file (concat noext ".dep"))
+        (xjs-mode)))
     (defun tfw-local-switch-xjs ()
       "Switch a TFW module to the XJS part."
       (interactive)
       (let ()
         (kill-buffer)
-        (find-file (concat noext ".xjs"))))
+        (find-file (concat noext ".xjs"))
+        (xjs-mode)))
     (defun tfw-local-switch-vert ()
       "Switch a TFW module to the VERT part."
       (interactive)
       (let ()
         (kill-buffer)
-        (find-file (concat noext ".vert"))))
+        (find-file (concat noext ".vert"))
+        (glsl-mode)))
     (defun tfw-local-switch-frag ()
       "Switch a TFW module to the FRAG part."
       (interactive)
       (let ()
         (kill-buffer)
-        (find-file (concat noext ".frag"))))
+        (find-file (concat noext ".frag"))
+        (glsl-mode)))
 
     ;; Hook the keys.
     (local-set-key "c" 'tfw-local-switch-css)
