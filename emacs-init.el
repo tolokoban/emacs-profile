@@ -46,6 +46,8 @@ Return a list of installed packages or nil for every skipped package."
                           'dired-narrow
                           'dired-subtree
                           'diredful
+                          'projectile
+                          'neotree
                           'multiple-cursors)
 
 (require 'use-package)
@@ -62,6 +64,18 @@ Return a list of installed packages or nil for every skipped package."
 ;; (ac-config-default)
 ;;(require 'auto-complete-config)
 ;;(ac-config-default)
+
+;; ==========
+;; Projectile
+;; ----------
+(require 'projectile)
+
+;; =======
+;; NeoTree
+;; -------
+(require 'neotree)
+(global-set-key [f11] 'neotree-toggle)
+(setq neo-smart-open t)
 
 ;; =====
 ;; Dired
@@ -167,7 +181,7 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; Remplace les tabulations par des espaces lors de l'indentation.
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
 ;; Permet de colorier des portions de text avec des expressions rÃ©guliÃ¨res.
@@ -564,24 +578,6 @@ Puis affichage avec evince."
     (shell-command cmd)))
 
 
-;; ======================================
-;;  DÃ©finition de Toloframework sur F11.
-;; --------------------------------------
-(defun tfw ()
-  "Toloframework compiler.
-
-Extrait la documentation et un fichier compressÃ© d'un script javascript Ã
-l'extension <*.js>."
-  (interactive)
-  (progn
-    (save-buffer)
-    (shell-command (concat "python D:/Code/publicator/prj/ToloFrameWork/tfw.py "
-                           buffer-file-name))
-    ;;                           " D:/Code/www/TFW/@"))
-    )
-  )
-(global-set-key (kbd "<f11>") 'tfw)
-
 ;; ====================================
 ;; Permet d'indenter un fichier entier.
 (defun iwb ()
@@ -631,7 +627,7 @@ by using nxml's indentation rules."
 ;;  Mode pour HTML
 ;; ----------------
 (defun my-html-mode-hook ()
-  (setq tab-width 2)
+  (setq tab-width 4)
   (setq indent-tabs-mode t)
   (define-key html-mode-map (kbd "C->") 'sgml-close-tag))
 
@@ -735,7 +731,7 @@ by using nxml's indentation rules."
 ;; ESLint on the fly for Javascript
 ;; --------------------------------
 
-;; http://www.flycheck.org/manual/latest/index.html
+;; http://www.flycheck.org/
 (require 'flycheck)
 
 ;; turn on flychecking globally
@@ -746,7 +742,7 @@ by using nxml's indentation rules."
   (append flycheck-disabled-checkers
     '(javascript-jshint)))
 
-;; use eslint with web-mode for jsx files
+;; use eslint with js2-mode
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
 
 ;; customize flycheck temp file prefix
