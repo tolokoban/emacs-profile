@@ -1,3 +1,4 @@
+
 ;;; Pour utiliser ce fichier, ajouter ceci dans votre fichier ".emacs" :
 ;;;    (setq root "~/Code/tolokoban/")
 ;;;    (load-file (concat root "emacs/emacs-init.el"))
@@ -8,10 +9,10 @@
 ;; -----
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+             '("melpa" . "http://melpa.org/packages/") t)
+;;(package-initialize)
 
 ;; ========================
 ;; Install needed packages.
@@ -35,14 +36,18 @@ Return a list of installed packages or nil for every skipped package."
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
+
+
 (ensure-package-installed 'use-package
                           'glsl-mode
                           'dash
-			  'json-mode
-			  'js2-mode
-			  'dired-narrow
-			  'dired-subtree
+                          'json-mode
+                          'js2-mode
+                          'dired-narrow
+                          'dired-subtree
                           'diredful
+                          'projectile
+                          'neotree
                           'multiple-cursors)
 
 (require 'use-package)
@@ -55,8 +60,22 @@ Return a list of installed packages or nil for every skipped package."
 (load-library "iso-transl")
 
 ;; Auto-complete
+;; (require 'auto-complete-config)
+;; (ac-config-default)
 ;;(require 'auto-complete-config)
 ;;(ac-config-default)
+
+;; ==========
+;; Projectile
+;; ----------
+(require 'projectile)
+
+;; =======
+;; NeoTree
+;; -------
+(require 'neotree)
+(global-set-key [f11] 'neotree-toggle)
+(setq neo-smart-open t)
 
 ;; =====
 ;; Dired
@@ -162,7 +181,7 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; Remplace les tabulations par des espaces lors de l'indentation.
-(setq tab-width 2)
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
 ;; Permet de colorier des portions de text avec des expressions rÃ©guliÃ¨res.
@@ -559,24 +578,6 @@ Puis affichage avec evince."
     (shell-command cmd)))
 
 
-;; ======================================
-;;  DÃ©finition de Toloframework sur F11.
-;; --------------------------------------
-(defun tfw ()
-  "Toloframework compiler.
-
-Extrait la documentation et un fichier compressÃ© d'un script javascript Ã
-l'extension <*.js>."
-  (interactive)
-  (progn
-    (save-buffer)
-    (shell-command (concat "python D:/Code/publicator/prj/ToloFrameWork/tfw.py "
-                           buffer-file-name))
-    ;;                           " D:/Code/www/TFW/@"))
-    )
-  )
-(global-set-key (kbd "<f11>") 'tfw)
-
 ;; ====================================
 ;; Permet d'indenter un fichier entier.
 (defun iwb ()
@@ -626,7 +627,7 @@ by using nxml's indentation rules."
 ;;  Mode pour HTML
 ;; ----------------
 (defun my-html-mode-hook ()
-  (setq tab-width 2)
+  (setq tab-width 4)
   (setq indent-tabs-mode t)
   (define-key html-mode-map (kbd "C->") 'sgml-close-tag))
 
@@ -723,3 +724,37 @@ by using nxml's indentation rules."
 ;; ToloFrameWork utilities.
 (load-file (concat root "tfw.el"))
 
+(setq-default fill-column 100)
+
+
+;; ================================
+;; ESLint on the fly for Javascript
+;; --------------------------------
+
+;; http://www.flycheck.org/
+(require 'flycheck)
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; use eslint with js2-mode
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))

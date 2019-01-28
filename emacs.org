@@ -121,5 +121,18 @@ Les plus courants sont : dos, unix, mac.
 * Parenthèses, crochets, accolades
 ** C-M-n : Aller à la par/cro/acc fermant le bloc courant.
 ** C-M-p : Aller à la par/cro/acc ouvrant le bloc courant.
+* NeoTree
+SPC, RET or TAB: Open file, fold/unfold directory.
+U: Go up a directory.
+g: Refresh.
+A: Maximize/minimize NeoTree window.
+H: Toggle display hidden files.
+O: Recursively open a directory.
+C-c C-n: Create a file or create a directory if filename ends with a ‘/’
+C-c C-d: Delete a file or a directory.
+C-c C-r: Rename a file or a directory.
+C-c C-c: Change the root directory.
+C-c C-p: Copy a file or a directory. 
 
+   
    
