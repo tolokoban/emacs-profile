@@ -15,3 +15,11 @@ First install ESLint and Babel:
 npm install -g eslint babel-eslint
 ```
 
+Install following packages with the EMacs package manager:
+```
+M-x list-packages
+```
+
+Packages to install:
+* `flycheck`
+* `exec-path-from-shell`
