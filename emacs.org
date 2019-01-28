@@ -136,3 +136,5 @@ C-c C-p: Copy a file or a directory.
 
    
    
+* Flycheck
+C-c ! l : List all errors and warnings.

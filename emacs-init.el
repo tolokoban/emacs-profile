@@ -47,6 +47,7 @@ Return a list of installed packages or nil for every skipped package."
                           'dired-subtree
                           'diredful
                           'projectile
+                          'flycheck
                           'neotree
                           'multiple-cursors)
 
@@ -675,7 +676,7 @@ by using nxml's indentation rules."
 (delete-other-windows)
 (find-file (concat "~/todo.org"))
 (split-window-right)
-(find-file (concat root "emacs-init.el"))
+(find-file (concat root "emacs.org"))
 
 
 ;; Open Recent File Menu.
