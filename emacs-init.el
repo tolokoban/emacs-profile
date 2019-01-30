@@ -223,6 +223,9 @@ Return a list of installed packages or nil for every skipped package."
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
 (add-to-list 'auto-mode-alist '("\\.jsn$" . json-mode))
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+;; Prevent js2 from checking syntax. Flycheck will do that.
+(setq js2-mode-show-parse-errors nil)
+(setq js2-mode-show-strict-warnings nil)
 
 ;; ===========
 ;;  GLSL mode
@@ -717,7 +720,7 @@ by using nxml's indentation rules."
 (require 'yasnippet)
 (yas-global-mode 1)
 (setq yas-installed-snippets-dir (concat root "yas/snippets"))
-;; (yas-load-directory (concat root "yas/snippets"))
+(yas-load-directory (concat root "yas/snippets"))
 
 (global-set-key (kbd "<f1>") 'yas-expand)
 

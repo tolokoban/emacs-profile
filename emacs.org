@@ -133,8 +133,6 @@ C-c C-d: Delete a file or a directory.
 C-c C-r: Rename a file or a directory.
 C-c C-c: Change the root directory.
 C-c C-p: Copy a file or a directory. 
-
-   
-   
+     
 * Flycheck
 C-c ! l : List all errors and warnings.

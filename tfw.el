@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(require 'button)
 
 (defun tfw-switch-css ()
   "Switch a TFW module to the CSS part."
@@ -44,7 +45,8 @@
   (interactive)
   (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".xjs")))
     (other-window 1)
-    (find-file fname) ) )
+    (find-file fname)
+    (xjs-mode) ) )
 
 (defun tfw-switch-ini ()
   "Switch a TFW module to the INI part."
@@ -58,29 +60,78 @@
   (interactive)
   (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".dep")))
     (other-window 1)
-    (find-file fname) ) )
+    (find-file fname)
+    (xjs-mode) ) )
 
 (defun tfw-switch-vert ()
   "Switch a TFW module to the VERT part."
   (interactive)
   (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".vert")))
     (other-window 1)
-    (find-file fname) ) )
+    (find-file fname)
+    (glsl-mode) ) )
 
 (defun tfw-switch-frag ()
   "Switch a TFW module to the FRAG part."
   (interactive)
   (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".frag")))
     (other-window 1)
-    (find-file fname) ) )
+    (find-file fname)
+    (glsl-mode) ) )
 
-(global-set-key (kbd "C-S-t c" ) 'tfw-switch-css)
-(global-set-key (kbd "C-S-t j" ) 'tfw-switch-js)
-(global-set-key (kbd "C-S-t i" ) 'tfw-switch-ini)
-(global-set-key (kbd "C-S-t d" ) 'tfw-switch-dep)
-(global-set-key (kbd "C-S-t v" ) 'tfw-switch-vert)
-(global-set-key (kbd "C-S-t f" ) 'tfw-switch-frag)
-(global-set-key (kbd "C-S-t x" ) 'tfw-switch-xjs)
+(defun tfw-switch-wrk ()
+  "Switch a TFW module to the Worker."
+  (interactive)
+  (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".wrk")))
+    (other-window 1)
+    (find-file fname)
+    (js2-mode) ) )
+
+(defun tfw-lint-now ()
+  "Start ESLint now.  Usefull if you don't want on fly checking."
+  (interactive)
+  (let* ((fname (buffer-file-name))
+         (result (shell-command-to-string (concat "eslint --max-warnings 32 " fname)))
+         (lines (split-string (string-trim result) "\n"))
+         (config-path (locate-dominating-file fname ".eslintrc.yaml"))
+         (config-name (concat config-path ".eslintrc.yaml")))
+    (other-window 1)
+    (set-buffer (get-buffer-create "*ESLint*"))
+    (switch-to-buffer "*ESLint*")
+    (text-mode)
+    (erase-buffer)
+    (insert "ESLint: ")
+    (insert (format-time-string "%T"))
+    (insert "\n----------------\n")
+    (insert-button config-name
+                   'file-to-open config-name
+                   'action (lambda (btn) (insert (concat "### " (button-get btn 'file-to-open)))))
+    (insert "\n\n")
+    (when (< (length lines) 2)
+      (insert (propertize
+               "Great job! Your code is perfect!"
+               'font-lock-face '(:foreground "green" :weight bold))))
+    (dolist (line lines)
+      (progn (insert (concat line "\n"))))))
+
+(defun tfw-lint-fix ()
+  "Start ESLint now.  Usefull if you don't want on fly checking."
+  (interactive)
+  (let ((fname (buffer-file-name)))
+    (shell-command (concat "eslint --fix " fname))
+    (revert-buffer t t)
+    (tfw-lint-now)))
+
+(global-set-key (kbd "<f12> c" ) 'tfw-switch-css)
+(global-set-key (kbd "<f12> j" ) 'tfw-switch-js)
+(global-set-key (kbd "<f12> i" ) 'tfw-switch-ini)
+(global-set-key (kbd "<f12> d" ) 'tfw-switch-dep)
+(global-set-key (kbd "<f12> v" ) 'tfw-switch-vert)
+(global-set-key (kbd "<f12> f" ) 'tfw-switch-frag)
+(global-set-key (kbd "<f12> x" ) 'tfw-switch-xjs)
+(global-set-key (kbd "<f12> w" ) 'tfw-switch-wrk)
+(global-set-key (kbd "<f12> L" ) 'tfw-lint-now)
+(global-set-key (kbd "<f12> F" ) 'tfw-lint-fix)
 
 
 (defun toloframework-main-menu ()
@@ -101,7 +152,7 @@
     (setq extensions '("css" "js" "ini" "dep" "vert" "frag"))
     (dolist (ext extensions)
       (insert (propertize
-               (concat "[" (substring ext 0 1) "]")
+               (concat "[f12 " (substring ext 0 1) "]")
                'font-lock-face '(:foreground "blue" :weight bold)))
       (insert (propertize (concat " " basename) 'font-lock-face 'font-lock-comment-face))
       (insert (concat "." ext))
@@ -159,25 +210,34 @@
         (kill-buffer)
         (find-file (concat noext ".frag"))
         (glsl-mode)))
-
-    ;; Hook the keys.
-    (local-set-key "c" 'tfw-local-switch-css)
-    (local-set-key "j" 'tfw-local-switch-js)
-    (local-set-key "i" 'tfw-local-switch-ini)
-    (local-set-key "d" 'tfw-local-switch-dep)
-    (local-set-key "v" 'tfw-local-switch-vert)
-    (local-set-key "f" 'tfw-local-switch-frag)
-    (local-set-key "x" 'tfw-local-switch-xjs)
-
-    (local-set-key "q" 'kill-buffer)
     ))
 
-(global-set-key (kbd "<f12>" ) 'toloframework-main-menu)
+(global-set-key (kbd "<f12> <f12>" ) 'toloframework-main-menu)
 
 
 (provide 'tfw)
 ;;; tfw.el ends here
 
+;; Indentation for XJS.
+(defvar xjs-indent-line 2 "Indentation offset for `xjs-mode'.")
+(defun xjs-indent-function ()
+  "Indent current line for `xjs-mode'."
+  (interactive)
+  (let ((indent-col 0))
+    (save-excursion
+      (beginning-of-line)
+      (condition-case nil
+          (while t
+            (backward-up-list 1)
+            (when (looking-at "[[{]")
+              (setq indent-col (+ indent-col xjs-indent-offset))
+              (message (concat "indent-col: " indent-col))))
+        (error nil)))
+    (save-excursion
+      (back-to-indentation)
+      (when (and (looking-at "[]}]") (>= indent-col xjs-indent-offset))
+        (setq indent-col (- indent-col xjs-indent-offset))))
+    (indent-line-to indent-col)))
 
 ;; Syntax highlighting for XJS files.
 (setq xjs-highlights
@@ -198,23 +258,4 @@
   (setq font-lock-defaults '(xjs-highlights)))
 (add-to-list 'auto-mode-alist '("\\.xjs$" . xjs-mode))
 
-(defvar xjs-indent-line 2 "Indentation offset for `xjs-mode'.")
-(defun xjs-indent-function ()
-  "Indent current line for `xjs-mode'."
-  (interactive)
-  (let ((indent-col 0))
-    (save-excursion
-      (beginning-of-line)
-      (condition-case nil
-          (while t
-            (backward-up-list 1)
-            (when (looking-at "[[{]")
-              (setq indent-col (+ indent-col xjs-indent-offset))
-              (message (concat "indent-col: " indent-col))))
-        (error nil)))
-    (save-excursion
-      (back-to-indentation)
-      (when (and (looking-at "[]}]") (>= indent-col xjs-indent-offset))
-        (setq indent-col (- indent-col xjs-indent-offset))))
-    (indent-line-to indent-col)))
 (provide 'xjs-mode)

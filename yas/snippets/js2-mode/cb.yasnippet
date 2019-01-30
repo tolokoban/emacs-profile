@@ -2,11 +2,13 @@
 # key: cb
 # name: var CODE_BEHIND...
 # --
-var CODE_BEHIND = {
-  $1: $1
-};
+/* exported CODE_BEHIND */
+const CODE_BEHIND = { $1 };
 
-
-function $1() {
+/**
+ * @param {${3:object}} $2
+ * @return {Element} $4
+ */
+function $1( $2 ) {
 $0
 }
