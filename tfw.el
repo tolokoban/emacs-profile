@@ -98,14 +98,14 @@
     (other-window 1)
     (set-buffer (get-buffer-create "*ESLint*"))
     (switch-to-buffer "*ESLint*")
-    (text-mode)
+    (view-mode)
     (erase-buffer)
     (insert "ESLint: ")
     (insert (format-time-string "%T"))
     (insert "\n----------------\n")
     (insert-button config-name
                    'file-to-open config-name
-                   'action (lambda (btn) (insert (concat "### " (button-get btn 'file-to-open)))))
+                   'action (lambda (btn) (find-file (button-get btn 'file-to-open))))
     (insert "\n\n")
     (when (< (length lines) 2)
       (insert (propertize
@@ -113,6 +113,8 @@
                'font-lock-face '(:foreground "green" :weight bold))))
     (dolist (line lines)
       (progn (insert (concat line "\n"))))))
+
+;; "^\s*\\([0-9]+\\):\\([0-9]+\\)\s+\\(error\\|warning\\)\s+\\(.+\\)\\([a-z-]+\\)$"
 
 (defun tfw-lint-fix ()
   "Start ESLint now.  Usefull if you don't want on fly checking."
