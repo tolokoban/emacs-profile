@@ -94,11 +94,12 @@
          (result (shell-command-to-string (concat "eslint --max-warnings 32 " fname)))
          (lines (split-string (string-trim result) "\n"))
          (config-path (locate-dominating-file fname ".eslintrc.yaml"))
-         (config-name (concat config-path ".eslintrc.yaml")))
+         (config-name (concat config-path ".eslintrc.yaml"))
+         (rx "^\s*\\([0-9]+\\):\\([0-9]+\\)\s+\\(error\\|warning\\)\s+\\(.+?\\)\s+\\([a-z-]+\\)$"))
     (other-window 1)
     (set-buffer (get-buffer-create "*ESLint*"))
     (switch-to-buffer "*ESLint*")
-    (view-mode)
+    (text-mode)
     (erase-buffer)
     (insert "ESLint: ")
     (insert (format-time-string "%T"))
@@ -112,9 +113,34 @@
                "Great job! Your code is perfect!"
                'font-lock-face '(:foreground "green" :weight bold))))
     (dolist (line lines)
-      (progn (insert (concat line "\n"))))))
+      (progn
+        (if (string-match rx line)
+            (progn
+              (insert (concat (match-string 1 line) ":" (match-string 2 line) " "))
+              (if (string= "error" (match-string 3 line))
+                  (insert
+                   (propertize
+                    (match-string 4 line)
+                    'font-lock-face
+                    '(:foreground "red" :weight bold)))
+                (insert
+                 (propertize
+                  (match-string 4 line)
+                  'font-lock-face
+                  '(:foreground "yellow")))
+                )
+              (insert " ")
+              (insert-button (match-string 5 line)
+                             'eslint-rule (match-string 5 line)
+                             'action (lambda (btn)
+                                       (browse-url
+                                        (concat "https://eslint.org/docs/rules/"
+                                                (button-get btn 'eslint-rule)))))
+              (insert "\n"))
+          (insert (concat line "\n"))
+          )))))
 
-;; "^\s*\\([0-9]+\\):\\([0-9]+\\)\s+\\(error\\|warning\\)\s+\\(.+\\)\\([a-z-]+\\)$"
+;; "^\s*\\([0-9]+\\):\\([0-9]+\\)\s+\\(error\\|warning\\)\s+\\(.+?\\)\s+\\([a-z-]+\\)$"
 
 (defun tfw-lint-fix ()
   "Start ESLint now.  Usefull if you don't want on fly checking."
