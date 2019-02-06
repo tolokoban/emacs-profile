@@ -47,7 +47,6 @@ Return a list of installed packages or nil for every skipped package."
                           'dired-subtree
                           'diredful
                           'projectile
-                          'flycheck
                           'neotree
                           'multiple-cursors)
 
@@ -208,10 +207,13 @@ Return a list of installed packages or nil for every skipped package."
 ;; Usefull function to get the CamelCase version if an identifier.
 (defun camelize (s)
   "Transform 'tfw.web-service' into 'WebService'."
-  (mapconcat 'identity (mapcar 'capitalize (split-string
-                                            (car (last (split-string s "\\." ) ) )
-                                            "-"
-                                            )) ""))
+  (mapconcat
+   'identity
+   (mapcar 'capitalize
+           (split-string
+            (car (last (split-string s "[\\./]+" ) ) )
+            "-"
+            )) ""))
 ;; ===========
 ;;  js2-mode
 ;; -----------

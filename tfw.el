@@ -69,7 +69,15 @@
   (let ((fname (concat (file-name-sans-extension (buffer-file-name)) ".vert")))
     (other-window 1)
     (find-file fname)
-    (glsl-mode) ) )
+    (when (eq 0 (buffer-size))
+      (insert "// Perspective\n")
+      (insert "uniform mat4 uniProjection;\n\n")
+      (insert "// Point\n")
+      (insert "attribute vec3 attPoint;\n\n")
+      (insert "void main() {\n")
+      (insert "  gl_Position = uniProjection * attPoint;\n")
+      (insert "}"))
+    (glsl-mode)))
 
 (defun tfw-switch-frag ()
   "Switch a TFW module to the FRAG part."
@@ -156,7 +164,8 @@
           (insert (concat line "\n"))
           )))
     (goto-char (point-min))
-    (forward-line 5)))
+    (forward-line 5)
+    (view-mode)))
 
 ;; "^\s*\\([0-9]+\\):\\([0-9]+\\)\s+\\(error\\|warning\\)\s+\\(.+?\\)\s+\\([a-z-]+\\)$"
 
