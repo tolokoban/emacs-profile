@@ -91,6 +91,7 @@
   "Start ESLint now.  Usefull if you don't want on fly checking."
   (interactive)
   (let* ((fname (buffer-file-name))
+         (buff (current-buffer))
          (result (shell-command-to-string (concat "eslint --max-warnings 32 " fname)))
          (lines (split-string (string-trim result) "\n"))
          (config-path (locate-dominating-file fname ".eslintrc.yaml"))
@@ -106,6 +107,8 @@
     (insert "\n----------------\n")
     (insert-button config-name
                    'file-to-open config-name
+                   'follow-link t
+                   'help-echo "Click to edit ESLint rules"
                    'action (lambda (btn) (find-file (button-get btn 'file-to-open))))
     (insert "\n\n")
     (when (< (length lines) 2)
@@ -116,7 +119,18 @@
       (progn
         (if (string-match rx line)
             (progn
-              (insert (concat (match-string 1 line) ":" (match-string 2 line) " "))
+              (insert-button (concat (match-string 1 line) ":" (match-string 2 line))
+                             'eslint-linenum (string-to-number (match-string 1 line))
+                             'eslint-linepos (string-to-number (match-string 2 line))
+                             'follow-link t
+                             'help-echo "Click to locate this error"
+                             'action (lambda (btn)
+                                       (progn
+                                         (goto-line (button-get btn 'eslint-linenum) buff)
+                                         (right-char (- (button-get btn 'eslint-linepos) 1))
+                                         (recenter-top-bottom)
+                                       )))
+              (insert " ")
               (if (string= "error" (match-string 3 line))
                   (insert
                    (propertize
@@ -132,13 +146,17 @@
               (insert " ")
               (insert-button (match-string 5 line)
                              'eslint-rule (match-string 5 line)
+                             'follow-link t
+                             'help-echo "Click to get a description of this rule"
                              'action (lambda (btn)
                                        (browse-url
                                         (concat "https://eslint.org/docs/rules/"
                                                 (button-get btn 'eslint-rule)))))
               (insert "\n"))
           (insert (concat line "\n"))
-          )))))
+          )))
+    (goto-char (point-min))
+    (forward-line 5)))
 
 ;; "^\s*\\([0-9]+\\):\\([0-9]+\\)\s+\\(error\\|warning\\)\s+\\(.+?\\)\s+\\([a-z-]+\\)$"
 
